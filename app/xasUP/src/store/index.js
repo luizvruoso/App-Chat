@@ -7,7 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['user'], //reducers que serao gravados
+  whitelist: ['user', 'messages'], //reducers que serao gravados
   //blacklist: [], //reducers que nao serao gravados
 };
 

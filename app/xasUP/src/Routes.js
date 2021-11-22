@@ -31,6 +31,7 @@ import {
 
 import AppMessageNotification from './components/AppMessageNotification';
 import Home from './containers/Home';
+import Chat from './containers/Chat';
 
 //import Sensors from './containers/SensorsMeasurements';
 
@@ -73,6 +74,7 @@ export default function Routes(props) {
             }}
             initialRouteName="Home">
             <RootStack.Screen name="XASUP" component={Home} />
+            <RootStack.Screen name="Chat" component={Chat} />
           </RootStack.Navigator>
         </NavigationContainer>
       </SafeAreaView>

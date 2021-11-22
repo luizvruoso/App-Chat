@@ -1,8 +1,10 @@
 import {combineReducers} from 'redux';
 import user from './user/Reducer';
+import messages from './messages/Reducer';
 
 const appReducer = combineReducers({
   user,
+  messages,
 });
 
 const rootReducer = (state, action) => {
