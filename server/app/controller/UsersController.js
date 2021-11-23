@@ -40,10 +40,13 @@ module.exports = {
     
     var findUserPhone = json.clients.findIndex(el => el.phone == req.body.userPhone);
     var findContactPhone = json.clients.findIndex(el => el.phone == req.body.contactPhone);
-
+    
     delete req.body.userPhone
 
     if (findContactPhone != -1 && findUserPhone != -1) {
+
+      var aux = json.clients.findIndex(el => el.phone == req.body.phone);
+
       json.clients[findUserPhone].contact.push(req.body);
 
       let data = JSON.stringify(json);
