@@ -19,4 +19,13 @@ module.exports = function (route) {
     usersController.getContacts(route, req, res);
   });
 
+  route.delete("/deleteContact", function (req, res) {
+    usersController.deleteContact(route, req, res);
+  });
+  route.post("/createGroup", function (req, res){
+    usersController.createGroup(route, req, res)
+  });
+  route.delete("/deleteGroup", function (req, res){
+    usersController.deleteGroup(route, req, res)
+  });
 };
