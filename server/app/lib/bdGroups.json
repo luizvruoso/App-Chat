@@ -6,25 +6,21 @@
                 {
                     "contactName": "salsichinha gostoso",
                     "contactPhone": "982266665"
-                },
-                {
-                    "contactName": "luizinho fofinho",
-                    "contactPhone": "999932123"
                 }
             ],
             "groupID": "12345",
             "index": 0
         },
         {
-            "groupName": "grupinho do barulho",
+            "groupName": "grupinho do barulho 2",
             "groupMembers": [
-                {
-                    "contactName": "salsichinha gostoso",
-                    "contactPhone": "982266665"
-                },
                 {
                     "contactName": "luizinho fofinho",
                     "contactPhone": "999932123"
+                },
+                {
+                    "contactName": "salsichinha gostoso",
+                    "contactPhone": "982266665"
                 }
             ],
             "groupID": "33456",

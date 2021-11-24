@@ -95,7 +95,7 @@ module.exports = {
     const json = require('../lib/bd.json');
     var retorno = []
     for(var i = 0; i < json.clients.length; i++) {
-      retorno.push({"user" : json.clients[i].name, "phone" : json.clients[i].phone})
+      retorno.push({"contactName" : json.clients[i].name, "contactPhone" : json.clients[i].phone})
     }
 
     return res.json(200, retorno)
@@ -186,6 +186,69 @@ module.exports = {
       return res.send(400, "Erro da horta");
 
       
+  },
+
+  async deleteUserFromGroup(route, req, res) {
+  
+    const json = require('../lib/bdGroups.json');
+    
+    var groupIndex = json.groups.findIndex(el => el.groupID == req.body.groupID);
+    console.log("Group: " + groupIndex)
+
+    if(groupIndex != -1) {
+      
+      if((json.groups[groupIndex]) == null) 
+        return res.send(400, "Grupo inexistente :(");
+    
+          
+      var data = JSON.stringify(json.groups, (k, v) => Array.isArray(v) ? v.filter(e => e !== null) : v, 2 )
+
+      if(json.groups[groupIndex].groupID == req.body.groupID) {
+        
+        for(var i = 0; i < json.groups[groupIndex].groupMembers.length; i++)
+
+          if(json.groups[groupIndex].groupMembers[i].contactPhone === req.body.contactPhone) {
+              
+            //console.log("VRUUUM: " + JSON.stringify(json.groups[groupIndex].groupMembers[0]))
+            delete json.groups[groupIndex].groupMembers[i]
+
+              var data = JSON.stringify(json, (k, v) => Array.isArray(v) ? v.filter(e => e !== null) : v, 2 )
+         
+              await fs.writeFile('./app/lib/bdGroups.json', data,  {'flag':'w'},  function(err) {
+                if (err) {
+                    return console.error(err);
+                }
+              });
+
+              return res.json(200, data);
+
+            }
+
+            return res.json(400, "sla");
+
+      } 
+    }
+  },
+
+  async getGroupsFromUser(route, req, res) {
+    const json = require('../lib/bdGroups.json');
+
+    contato = []
+
+    for(var i = 0; i < json.groups.length; i++) {
+
+      for(var j = 0; j < json.groups[i].groupMembers.length; j++) {
+        console.log("Ó EU: " + JSON.stringify(json.groups[i].groupMembers[j].contactPhone))
+        if(json.groups[i].groupMembers[j].contactPhone === req.body.contactPhone) {
+          contato.push({"groupName" : json.groups[i].groupName, "groupID" : json.groups[i].groupID})
+        }
+
+      }
+
+    }
+
+    return res.json(200, contato)
+
   }
 
 
