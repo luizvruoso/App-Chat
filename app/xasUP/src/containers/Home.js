@@ -3,6 +3,7 @@ import Home from '../screens/Home';
 import {
   setErrorToFalse,
   setSuccessToFalse,
+  removeContact,
 } from '../store/modules/user/Actions';
 
 const mapStateToProps = state => {
@@ -13,6 +14,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = (dispatch, props) => {
   return {
+    removeContact: contactPhone => {
+      return dispatch(removeContact(contactPhone));
+    },
     setErrorToFalse: () => {
       return dispatch(setErrorToFalse());
     },

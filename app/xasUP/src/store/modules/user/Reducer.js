@@ -5,7 +5,10 @@ const INIT_STATE = {
     name: '',
     phone: '',
     photoPath: '',
+    isAuth: false,
   },
+  contacts: [],
+  groups: [],
   error: false,
   loading: false,
   success: false,
@@ -15,33 +18,38 @@ const INIT_STATE = {
 
 export default function user(state = INIT_STATE, action) {
   switch (action.type) {
-    case 'SET_SUCCESS_LOGIN':
-      return action.payload;
-
-    case 'SET_PHONE_AUTH':
+    case 'SET_NEW_CONTACT':
       return produce(state, draft => {
-        draft.userInfo.phone = action.payload.phone;
-        return draft;
+        const data = action.payload.contacts;
+        if (Array.isArray(data)) {
+          data.map((el, index) => {
+            const it = draft.contacts.findIndex(
+              dC => dC.contactPhone === el.contactPhone,
+            );
+            if (it == -1) draft.contacts.push(el);
+          });
+        }
       });
+    case 'SET_LOGIN_SUCCESS':
+      return produce(state, draft => {
+        draft.userInfo.isAuth = true;
+        draft.userInfo.name = action.payload.name;
+        draft.userInfo.phone = action.payload.phone;
+      });
+    case 'DELETE_CONTACT':
+      return produce(state, draft => {
+        const contacts = draft.contacts.filter(
+          el => el.contactPhone !== action.payload.contactPhone,
+        );
 
-    case 'SET_FAILED_LOGIN':
-      return INIT_STATE;
+        draft.contacts = contacts;
+      });
 
     case 'SET_USER_INFO':
       return produce(state, draft => {
         draft.userInfo = action.payload.userInfo;
       });
 
-    case 'SET_USER_DATA':
-      return produce(state, draft => {
-        draft.uuid = action.payload.data.uuid;
-        draft.userInfo = action.payload.data.userInfo;
-        return draft;
-      });
-    case 'SET_STEP_TYPE_CODE':
-      return produce(state, draft => {
-        draft.userInfo.phone = action.payload.phone;
-      });
     case 'ERROR_TO_FALSE':
       return produce(state, draft => {
         draft.error = false;

@@ -12,10 +12,13 @@ import {
   Image,
 } from 'react-native';
 import styles from '../../assets/globals';
+import {now, fromDateTimeGetTime} from '../../assets/utils';
+import {variables} from '../../assets/variables';
 
 export default function Message(props) {
   const message = props.message;
   const type = props.type;
+  const date = props.hasOwnProperty('data') ? props.data : now();
 
   if (type == 'received') {
     return (
@@ -23,7 +26,7 @@ export default function Message(props) {
         <View
           style={[
             {
-              minWidth: '30%',
+              minWidth: '20%',
               maxWidth: '90%',
               backgroundColor: '#FFF',
               minHeight: 50,
@@ -31,9 +34,29 @@ export default function Message(props) {
               borderTopEndRadius: 10,
               borderBottomEndRadius: 10,
               borderTopStartRadius: 10,
+              backgroundColor: '#CCC',
             },
           ]}>
-          <Text>{message}</Text>
+          <View style={[styles.row]}>
+            <Text
+              style={{
+                fontWeight: '500',
+                color: '#000',
+                fontSize: variables.fontChat,
+              }}>
+              {message}
+            </Text>
+          </View>
+          <View style={[styles.row, {alignSelf: 'flex-end'}]}>
+            <Text
+              style={{
+                fontWeight: '500',
+                color: '#000',
+                fontSize: variables.fontChat - 4,
+              }}>
+              {fromDateTimeGetTime(date).slice(0, 5)}
+            </Text>
+          </View>
         </View>
         <View style={[styles.flex1]}></View>
       </View>
@@ -44,7 +67,7 @@ export default function Message(props) {
         <View
           style={[
             {
-              minWidth: '30%',
+              minWidth: '20%',
               maxWidth: '90%',
               backgroundColor: '#FFF',
               minHeight: 50,
@@ -53,9 +76,29 @@ export default function Message(props) {
               //borderBottomEndRadius: 10,
               borderTopStartRadius: 10,
               borderBottomStartRadius: 10,
+              backgroundColor: '#293952',
             },
           ]}>
-          <Text>{message}</Text>
+          <View style={[styles.row]}>
+            <Text
+              style={{
+                fontWeight: '500',
+                color: '#FFF',
+                fontSize: variables.fontChat,
+              }}>
+              {message}
+            </Text>
+          </View>
+          <View style={[styles.row, {alignSelf: 'flex-end'}]}>
+            <Text
+              style={{
+                fontWeight: '500',
+                color: '#FFF',
+                fontSize: variables.fontChat - 4,
+              }}>
+              {fromDateTimeGetTime(date).slice(0, 5)}
+            </Text>
+          </View>
         </View>
       </View>
     );

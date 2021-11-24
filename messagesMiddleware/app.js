@@ -3,6 +3,7 @@ var app = express();
 var bodyParser = require("body-parser");
 var consign = require("consign");
 const cors = require("cors");
+const controllerMessages = require("./app/controller/controllerMessages");
 
 //require("./app/database");
 
@@ -27,9 +28,10 @@ app.use(
   })
 );
 
-app.listen(8000, function () {
-  console.log("Example app listening on port 8000!");
+app.listen(3000, function () {
+  console.log("Example app listening on port 3000!");
+  controllerMessages.hello();
 });
 
-consign().include("app/routes").then("app/controller").into(app);
+//consign().include("app/routes").then("app/controller").into(app);
 module.exports = app;

@@ -15,11 +15,16 @@ import Contato from '../components/Contato';
 import {Swipeable} from 'react-native-gesture-handler';
 import {variables} from '../assets/variables';
 import {navigate} from '../Routes';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+
 export default function Home(props) {
+  console.log('aloo', props.user.contacts);
   const RightAction = item => {
     return (
       <TouchableOpacity
+        style={{backgroundColor: variables.redVelvet}}
         onPress={() => {
+          props.removeContact(item.contactPhone);
           //props.removeFromCart(item.id);
           //navigate('Adicionar Produto', {operation: 'edit', item});
           //console.log('UUID: ', item.uuid);
@@ -31,8 +36,8 @@ export default function Home(props) {
               backgroundColor: variables.redVelvet,
               height: '95%',
               width: 100,
-              borderRadius: 20,
-              marginTop: 8,
+              //borderRadius: 20,
+              marginTop: 4,
             },
             styles.centerXY,
           ]}>
@@ -52,7 +57,7 @@ export default function Home(props) {
           onPress={() => {
             navigate('Chat', {item});
           }}>
-          <Contato name={'Vintaozinho'} />
+          <Contato name={item.contactName} />
         </TouchableOpacity>
       </Swipeable>
     );
@@ -60,10 +65,20 @@ export default function Home(props) {
 
   return (
     <View style={{flex: 1}}>
+      <View style={[styles.row, styles.mx10, styles.my10]}>
+        <TouchableOpacity
+          onPress={() => {
+            navigate('Adicionar');
+          }}
+          style={[styles.row]}>
+          <Icon name={'add-circle'} size={30} />
+          <Text style={[styles.mx10, {fontSize: 20}]}>Adicionar Contato</Text>
+        </TouchableOpacity>
+      </View>
       <FlatList
         //keyExtractor={keyExtractor}
         style={[styles.mb20]}
-        data={[{name: 'luiz'}]}
+        data={props.user.contacts}
         renderItem={renderItem}
       />
     </View>

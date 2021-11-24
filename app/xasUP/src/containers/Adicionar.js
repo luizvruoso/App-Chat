@@ -1,10 +1,11 @@
 import {connect} from 'react-redux';
-import Routes from '../Routes';
+import Adicionar from '../screens/Adicionar';
 import {
+  addContact,
   setErrorToFalse,
   setSuccessToFalse,
 } from '../store/modules/user/Actions';
-import {registerMessage} from '../store/modules/messages/Actions';
+import {initChat, registerMessage} from '../store/modules/messages/Actions';
 const mapStateToProps = state => {
   return {
     user: state.user,
@@ -13,8 +14,11 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = (dispatch, props) => {
   return {
-    registerMessage: (message, type, chatId) => {
-      return dispatch(registerMessage(message, type, chatId));
+    addContact: (contactName, contactPhone) => {
+      return dispatch(addContact(contactName, contactPhone));
+    },
+    initChat: chatId => {
+      return dispatch(initChat(chatId));
     },
     setErrorToFalse: () => {
       return dispatch(setErrorToFalse());
@@ -25,4 +29,4 @@ const mapDispatchToProps = (dispatch, props) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Routes);
+export default connect(mapStateToProps, mapDispatchToProps)(Adicionar);

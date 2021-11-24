@@ -7,6 +7,7 @@ export const variables = {
   info: '#2e5582',
   warning: '#ffc107',
   danger: '#ea3838',
+  redVelvet: '#86242A',
 
   fontSmall: 14,
   fontNormal: 18,

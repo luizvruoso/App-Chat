@@ -13,7 +13,7 @@ export function fromDateTimeGetTime(dateTime) {
   return momentTz
     .tz(dateTime, 'America/Sao_Paulo')
     .locale('pt-br')
-    .format('H:mm:ss');
+    .format('HH:mm:ss');
 }
 
 export function fromDateToDate(date) {

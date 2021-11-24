@@ -18,7 +18,7 @@ import {
   StatusBar,
   SafeAreaView,
 } from 'react-native';
-import React, {Component} from 'react';
+import React, {Component, useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {
@@ -32,7 +32,9 @@ import {
 import AppMessageNotification from './components/AppMessageNotification';
 import Home from './containers/Home';
 import Chat from './containers/Chat';
-
+import Adicionar from './containers/Adicionar';
+import Mqtt from './service/mqtt';
+import Login from './containers/Login';
 //import Sensors from './containers/SensorsMeasurements';
 
 const navigationRef = React.createRef();
@@ -55,7 +57,20 @@ export function navigatePop() {
 export default function Routes(props) {
   const {user} = props;
 
-  const routeNotLogged = () => {
+  useEffect(() => {
+    const contacts = props.user.contacts;
+    Mqtt.listenTo(contacts, '');
+  }, [props.user.contacts]);
+
+  useEffect(() => {
+    //Mqtt.connection();
+    /*Mqtt.listenTo('xuzito', msg => {
+      console.log('halozion', msg);
+    });*/
+
+    Mqtt.onMessage(props.registerMessage);
+  }, []);
+  const routeLogged = () => {
     const {user, setErrorToFalse, setSuccessToFalse} = props;
 
     return (
@@ -74,12 +89,39 @@ export default function Routes(props) {
             }}
             initialRouteName="Home">
             <RootStack.Screen name="XASUP" component={Home} />
-            <RootStack.Screen name="Chat" component={Chat} />
+            <RootStack.Screen
+              name="Chat"
+              options={({route}) => ({title: route.params.item.contactName})}
+              component={Chat}
+            />
+            <RootStack.Screen name="Adicionar" component={Adicionar} />
           </RootStack.Navigator>
         </NavigationContainer>
       </SafeAreaView>
     );
   };
 
-  return routeNotLogged();
+  const routeNotLogged = () => {
+    const {user, setErrorToFalse, setSuccessToFalse} = props;
+
+    return (
+      <SafeAreaView style={[{flex: 1}, {backgroundColor: '#FFF'}]}>
+        <AppMessageNotification
+          user={user}
+          setErrorToFalse={setErrorToFalse}
+          setSuccessToFalse={setSuccessToFalse}
+        />
+        <NavigationContainer ref={navigationRef}>
+          <RootStack.Navigator
+            screenOptions={{
+              headerShown: true,
+            }}>
+            <RootStack.Screen name="Login" component={Login} />
+          </RootStack.Navigator>
+        </NavigationContainer>
+      </SafeAreaView>
+    );
+  };
+
+  return !props.user.userInfo.isAuth ? routeNotLogged() : routeLogged();
 }

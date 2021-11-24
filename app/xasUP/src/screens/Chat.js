@@ -16,6 +16,7 @@ import Message from '../components/Message';
 import {Swipeable} from 'react-native-gesture-handler';
 import {variables} from '../assets/variables';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Mqtt from '../service/mqtt';
 
 const auxData = [
   {type: 'received', message: 'hoi'},
@@ -34,7 +35,21 @@ const auxData = [
 
 export default function Chat(props) {
   const messageData = props.messages;
+  const chatId = props.route.params.item.contactPhone;
   const [value, setValue] = useState('');
+  const [indexInArray, setIndexInArray] = useState(0);
+  const flatListRef = React.useRef();
+  useEffect(() => {
+    const index = props.messages.findIndex(el => el.chatId == chatId);
+    console.log('alo', props.messages, index);
+    console.log('alo', props.messages[index], index);
+    setIndexInArray(index);
+  }, []);
+
+  useEffect(() => {
+    console.log('entrei aqui');
+    //flatListRef.current.scrollToEnd({animated: true});
+  }, [messageData[indexInArray]]);
 
   const renderItem = useCallback(({item}) => {
     //console.log('aaaa', item);
@@ -51,9 +66,11 @@ export default function Chat(props) {
   return (
     <View style={{flex: 1}}>
       <FlatList
+        inverted
+        ref={flatListRef}
         //keyExtractor={keyExtractor}
         style={[{height: '90%'}]}
-        data={messageData}
+        data={messageData[indexInArray].messages}
         renderItem={renderItem}
       />
       <View
@@ -62,6 +79,7 @@ export default function Chat(props) {
         ]}>
         <TextInput
           onChangeText={val => setValue(val)}
+          value={value}
           style={[
             {
               height: 50,
@@ -74,12 +92,18 @@ export default function Chat(props) {
             styles.my20,
           ]}
           placeholder="Digite sua mensagem..."
-          keyboardType="numeric"
         />
         <TouchableOpacity
           style={[styles.centerY]}
           onPress={() => {
-            if (value.length > 0) props.registerMessage(value, 'sent');
+            setValue('');
+            if (value.length > 0) {
+              props.registerMessage(value, 'sent', chatId);
+              Mqtt.sendMessage('baeldung', {
+                mqttTopic: chatId,
+                value: value,
+              });
+            }
           }}>
           <Icon name="send-circle" size={40} />
         </TouchableOpacity>

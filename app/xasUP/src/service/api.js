@@ -1,9 +1,9 @@
 import axios from 'axios';
-import {URL_API} from '../env';
+//import {URL_API} from '../env';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const URL_API = {
-  URL: '',
+  URL: 'http://177.194.52.168:8082',
 };
 
 function ServiceException(message, customMessage = null) {
@@ -26,7 +26,6 @@ export async function fetchAPI(method, path, params = null, data = null) {
   } catch (e) {
     // error reading value
   }*/
-
   return await API({
     method: method,
     url: path,

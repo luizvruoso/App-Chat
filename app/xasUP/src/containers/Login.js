@@ -1,22 +1,25 @@
 import {connect} from 'react-redux';
-import Chat from '../screens/Chat';
+import Login from '../screens/Login';
 import {
   setErrorToFalse,
   setSuccessToFalse,
-  registerMessage,
-} from '../store/modules/messages/Actions';
+  removeContact,
+  login,
+} from '../store/modules/user/Actions';
 
 const mapStateToProps = state => {
   return {
     user: state.user,
-    messages: state.messages,
   };
 };
 
 const mapDispatchToProps = (dispatch, props) => {
   return {
-    registerMessage: (message, type, chatId) => {
-      return dispatch(registerMessage(message, type, chatId));
+    login: (name, phone) => {
+      return dispatch(login(name, phone));
+    },
+    removeContact: contactPhone => {
+      return dispatch(removeContact(contactPhone));
     },
     setErrorToFalse: () => {
       return dispatch(setErrorToFalse());
@@ -27,4 +30,4 @@ const mapDispatchToProps = (dispatch, props) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Chat);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
