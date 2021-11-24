@@ -90,6 +90,17 @@ module.exports = {
     return res.send(400, "Erro da horta");
   },
 
+  async getAllUsers(route, req, res) {
+
+    const json = require('../lib/bd.json');
+    var retorno = []
+    for(var i = 0; i < json.clients.length; i++) {
+      retorno.push({"user" : json.clients[i].name, "phone" : json.clients[i].phone})
+    }
+
+    return res.json(200, retorno)
+  },
+
   async deleteContact(route, req, res) {
     const json = require('../lib/bd.json');
 
@@ -155,10 +166,12 @@ module.exports = {
       if((json.groups[groupIndex]) == null) 
         return res.send(400, "Grupo inexistente :(");
 
-        console.log("Aoba: " + json.groups[groupIndex]);
+        console.log("Aoba: " + JSON.stringify(json.groups[groupIndex]));
         
           delete json.groups[groupIndex]
-          var data = JSON.stringify(json.groups)
+          var data = JSON.stringify(json, (k, v) => Array.isArray(v) ? v.filter(e => e !== null) : v, 2 )
+
+  
           //var data = JSON.stringify(json.groups, (k, v) => Array.isArray(v) ? v.filter(e => e !== null) : v, 2 )
 
           await fs.writeFile('./app/lib/bdGroups.json',data,  {'flag':'w'},  function(err) {
@@ -166,7 +179,8 @@ module.exports = {
                 return console.error(err);
             }
           });
-          return res.json((json.clients[findContactInsideUser]));
+
+          return res.json((json.groups));
 
       }
       return res.send(400, "Erro da horta");

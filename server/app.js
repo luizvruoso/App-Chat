@@ -27,8 +27,8 @@ app.use(
   })
 );
 
-app.listen(8000, function () {
-  console.log("Example app listening on port 8000!");
+app.listen(8082, function () {
+  console.log("Example app listening on port 8082!");
 });
 
 consign().include("app/routes").then("app/controller").into(app);
