@@ -22,10 +22,20 @@ module.exports = function (route) {
   route.delete("/deleteContact", function (req, res) {
     usersController.deleteContact(route, req, res);
   });
+
+  route.get("/getAllUsers", function (req, res){
+    usersController.getAllUsers(route, req, res);
+  });
   route.post("/createGroup", function (req, res){
     usersController.createGroup(route, req, res)
   });
   route.delete("/deleteGroup", function (req, res){
     usersController.deleteGroup(route, req, res)
+  });
+  route.delete("/deleteUserFromGroup", function (req, res){
+    usersController.deleteUserFromGroup(route, req, res)
+  });
+  route.get("/getGroupsFromUser", function (req, res){
+    usersController.getGroupsFromUser(route, req, res)
   });
 };
