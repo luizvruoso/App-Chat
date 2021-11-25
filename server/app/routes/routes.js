@@ -32,6 +32,9 @@ module.exports = function (route) {
   route.delete("/deleteGroup", function (req, res){
     usersController.deleteGroup(route, req, res)
   });
+  route.post("/addUserToGroup", function(req,res) {
+    usersController.addUserToGroup(route, req, res)
+  });
   route.delete("/deleteUserFromGroup", function (req, res){
     usersController.deleteUserFromGroup(route, req, res)
   });

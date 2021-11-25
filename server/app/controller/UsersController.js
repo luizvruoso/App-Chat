@@ -155,6 +155,42 @@ module.exports = {
     console.log(indexedJSON);
   },
 
+  async addUserToGroup(route, req, res) {
+    const json = require("../lib/bdGroups.json");
+
+    var groupIndex = json.groups.findIndex(
+      (el) => el.groupID == req.body.groupID
+    );
+
+    if (groupIndex != -1) {
+      if (json.groups[groupIndex] == null) {
+        return res.send(400);
+      }
+
+      if (json.groups[groupIndex].groupID == req.body.groupID) {
+        json.groups[groupIndex].groupMembers.push({
+          "contactName": req.body.contactName,
+          "contactPhone": req.body.contactPhone,
+        });
+      }
+    }
+
+    let data = JSON.stringify(json);
+
+    await fs.writeFile(
+      "./app/lib/bdGroups.json",
+      data,
+      { flag: "w" },
+      function (err) {
+        if (err) {
+          return console.error(err);
+        }
+      }
+    );
+
+    return res.json(json.groups[groupIndex]);
+  },
+
   async deleteGroup(route, req, res) {
 
     const json = require('../lib/bdGroups.json');
