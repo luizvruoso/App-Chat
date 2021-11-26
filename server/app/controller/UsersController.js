@@ -32,8 +32,12 @@ module.exports = {
     
       return res.json((json.clients));
     }
+    
+    if(aux != -1) {
+      return res.json(200, "Login foi bem sucedido")
+    }
 
-    return res.send(400, "O usuario ja esta cadastrado, amigao. Tenta depois, serio");
+    return res.json(409, "O usuario ja esta cadastrado, amigao. Tenta depois, serio")
   },
 
   async addContact(route, req, res) {
