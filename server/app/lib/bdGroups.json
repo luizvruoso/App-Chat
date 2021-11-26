@@ -1,30 +1,20 @@
 {
-    "groups": [
-        {
-            "groupName": "grupinho do barulho",
-            "groupMembers": [
-                {
-                    "contactName": "salsichinha gostoso",
-                    "contactPhone": "982266665"
-                }
-            ],
-            "groupID": "12345",
-            "index": 0
-        },
-        {
-            "groupName": "grupinho do barulho 2",
-            "groupMembers": [
-                {
-                    "contactName": "luizinho fofinho",
-                    "contactPhone": "999932123"
-                },
-                {
-                    "contactName": "salsichinha gostoso",
-                    "contactPhone": "982266665"
-                }
-            ],
-            "groupID": "33456",
-            "index": 0
-        }
-    ]
+  "groups": [
+    {
+      "groupName": "grupinho do barulho",
+      "groupMembers": [],
+      "groupID": 0,
+      "index": 0
+    },
+    {
+      "groupName": "grupinho do barulho 2",
+      "groupMembers": [
+        { "contactName": "luizinho fofinho", "contactPhone": "999932123" },
+        { "contactName": "salsichinha gostoso", "contactPhone": "982266665" },
+        { "contactName": "Cleber", "contactPhone": "19993912392" }
+      ],
+      "groupID": 1,
+      "index": 1
+    }
+  ]
 }

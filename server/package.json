@@ -35,9 +35,9 @@
     "get-caller-file": "^2.0.5",
     "kafkajs": "^1.15.0",
     "mqtt": "^4.2.8",
-    "nodemon": "^2.0.6"
+    "nodemon": "^2.0.6",
+    "uuid": "^8.3.2"
   },
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon app.js"

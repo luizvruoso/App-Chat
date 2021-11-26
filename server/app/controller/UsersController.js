@@ -1,5 +1,6 @@
 const e = require('express');
 const fs = require('fs');
+const { v4: uuidv4 } = require('uuid');
 
 module.exports = {
 
@@ -140,11 +141,15 @@ module.exports = {
 
   async createGroup(route, req, res) {
     const json = require('../lib/bdGroups.json');
-  
-    json.groups.push(req.body)
-    const indexedJSON = json.groups.map((item, index) => Object.assign(item, { index }))
+    let jsonMonstro = {
+      "groupName": req.body.groupName,
+      "groupMembers": req.body.groupMembers,
+      "groupID": uuidv4()
+    }
+    
+    json.groups.push(jsonMonstro)
 
-    let data = JSON.stringify(indexedJSON);
+    let data = JSON.stringify(json);
 
     await fs.writeFile('./app/lib/bdGroups.json', data,  {'flag':'w'},  function(err) {
       if (err) {
