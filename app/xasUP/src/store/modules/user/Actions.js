@@ -6,8 +6,37 @@ export function login(name, phone) {
   return async dispatch => {
     try {
       const ret = await fetchAPI('POST', '/postUser', null, {name, phone});
-
       dispatch(setLoginSucessPayload({name, phone}));
+    } catch (err) {
+      console.error('Eror ao inserir contato', err);
+    }
+  };
+}
+
+export function addNotSeenMessage(contactPhone) {
+  return async dispatch => {
+    try {
+      dispatch({
+        type: 'ADD_NOT_SEEN_MESSAGE',
+        payload: {
+          contactPhone,
+        },
+      });
+    } catch (err) {
+      console.error('Eror ao inserir contato', err);
+    }
+  };
+}
+
+export function cleanNotSeenMessages(contactPhone) {
+  return async dispatch => {
+    try {
+      dispatch({
+        type: 'CLEAN_NOT_SEEN_MESSAGES',
+        payload: {
+          contactPhone,
+        },
+      });
     } catch (err) {
       console.error('Eror ao inserir contato', err);
     }

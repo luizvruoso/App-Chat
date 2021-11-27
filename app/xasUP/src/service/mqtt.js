@@ -1,57 +1,60 @@
 import MQTT from 'sp-react-native-mqtt';
+var cli = null;
+import uuid from 'react-native-uuid';
 
 class MqttConnection {
-  client = null;
-  constructor() {
-    //super();
-    /*this.client = new Client({
-      uri: 'mqtt://192.168.0.142:1883',
-      clientId: 'clientId',
-      storage: myStorage,
-    });*/
+  init(props, callbackRegisterMessage, callbackSetVisualized) {
     MQTT.createClient({
       uri: 'mqtt://192.168.0.142:1883',
-      clientId: 'your_client_id',
+      clientId: uuid.v4(),
     }).then(client => {
-      this.client = client;
-      console.log('haloo', this.client);
-      this.client.subscribe('xuzito', 1);
-      this.client.connect();
-    });
+      //console.log('haloo', this.client);
 
-    //this.client.connect();
+      client.on('message', msg => {
+        const msgPayload = JSON.parse(msg.data);
+
+        if (msgPayload.hasOwnProperty('value')) {
+          callbackRegisterMessage(
+            msgPayload.value,
+            'received',
+            msgPayload.from,
+          );
+        } else {
+          callbackSetVisualized(msgPayload.from);
+        }
+      });
+      client.on('connect', function () {
+        console.log('connected');
+        client.subscribe(props.contactPhone, 1);
+        //client.publish('/data', "test", 0, false);
+        cli = client;
+      });
+      client.connect();
+    });
   }
 
+  //this.client.connect();
+
   connection(callback) {
-    this.client.on('open', function () {
+    client.on('open', () => {
       console.log('Conectado');
     });
   }
 
-  listenTo(topic) {
-    /*this.client.subscribe(topic, function (msg) {
-      if (!msg) {
-        callback(msg);
-      }
-    });*/
-    if (Array.isArray(topic)) {
-      topic.forEach(el => {
-        this.client.subscribe(`${el.contactPhone}`, 0);
-      });
-    }
-  }
-
   onMessage(callback) {
-    this.client.on('message', function (msg) {
-      console.log('hahahaha', msg);
-      callback(msg.data, 'received', msg.topic);
+    client.on('message', msg => {
+      const msgPayload = JSON.parse(msg.data);
+      console.info('hahahaha', msg);
+      callback(msgPayload.value, 'received', msgPayload.from);
     });
   }
 
   sendMessage(topic, message) {
-    this.client.publish(topic, JSON.stringify(message), 0, false);
+    console.log('payload', JSON.stringify(message));
+    cli.publish(topic, JSON.stringify(message), 0, true);
   }
 }
-const Mqtt = new MqttConnection();
+
+var Mqtt = new MqttConnection();
 
 export default Mqtt;

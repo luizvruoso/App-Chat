@@ -6,6 +6,8 @@ import {
   registerMessage,
 } from '../store/modules/messages/Actions';
 
+import {cleanNotSeenMessages} from '../store/modules/user/Actions';
+
 const mapStateToProps = state => {
   return {
     user: state.user,
@@ -15,6 +17,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = (dispatch, props) => {
   return {
+    cleanNotSeenMessages: chatId => {
+      return dispatch(cleanNotSeenMessages(chatId));
+    },
     registerMessage: (message, type, chatId) => {
       return dispatch(registerMessage(message, type, chatId));
     },

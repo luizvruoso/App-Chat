@@ -60,9 +60,9 @@ export default function Login(props) {
         <View style={[styles.row, styles.centerXY, styles.my10]}>
           <TouchableOpacity
             onPress={() => {
-              if (val.length == 16 && name.length > 5) {
-                props.login(name, val);
-              }
+              // if (val.length == 16 && name.length > 5) {
+              props.login(name, val);
+              //}
             }}
             style={[
               styles.row,

@@ -3,8 +3,12 @@ import Routes from '../Routes';
 import {
   setErrorToFalse,
   setSuccessToFalse,
+  addNotSeenMessage,
 } from '../store/modules/user/Actions';
-import {registerMessage} from '../store/modules/messages/Actions';
+import {
+  registerMessage,
+  setMessagesAsVisualizedByUser,
+} from '../store/modules/messages/Actions';
 const mapStateToProps = state => {
   return {
     user: state.user,
@@ -13,6 +17,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = (dispatch, props) => {
   return {
+    addNotSeenMessage: contactPhone => {
+      return dispatch(addNotSeenMessage(contactPhone));
+    },
     registerMessage: (message, type, chatId) => {
       return dispatch(registerMessage(message, type, chatId));
     },
@@ -21,6 +28,9 @@ const mapDispatchToProps = (dispatch, props) => {
     },
     setSuccessToFalse: () => {
       return dispatch(setSuccessToFalse());
+    },
+    setMessagesAsVisualizedByUser: user => {
+      return dispatch(setMessagesAsVisualizedByUser(user));
     },
   };
 };

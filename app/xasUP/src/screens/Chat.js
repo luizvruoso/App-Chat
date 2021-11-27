@@ -17,6 +17,7 @@ import {Swipeable} from 'react-native-gesture-handler';
 import {variables} from '../assets/variables';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Mqtt from '../service/mqtt';
+import MqttConnection from '../service/mqtt';
 
 const auxData = [
   {type: 'received', message: 'hoi'},
@@ -34,21 +35,33 @@ const auxData = [
 ];
 
 export default function Chat(props) {
+  const user = props.user.userInfo;
   const messageData = props.messages;
   const chatId = props.route.params.item.contactPhone;
   const [value, setValue] = useState('');
   const [indexInArray, setIndexInArray] = useState(0);
   const flatListRef = React.useRef();
+
+  const sendPayloadVisualized = () => {
+    MqttConnection.sendMessage('baeldung', {
+      mqttTopic: {
+        to: chatId,
+        from: user.phone,
+      },
+      setState: 'visualized',
+    });
+    props.cleanNotSeenMessages(chatId);
+  };
+
   useEffect(() => {
     const index = props.messages.findIndex(el => el.chatId == chatId);
-    console.log('alo', props.messages, index);
-    console.log('alo', props.messages[index], index);
+    sendPayloadVisualized();
+
     setIndexInArray(index);
   }, []);
 
   useEffect(() => {
-    console.log('entrei aqui');
-    //flatListRef.current.scrollToEnd({animated: true});
+    sendPayloadVisualized();
   }, [messageData[indexInArray]]);
 
   const renderItem = useCallback(({item}) => {
@@ -58,7 +71,12 @@ export default function Chat(props) {
         onPress={() => {
           //navigate('DetailsMonitor', {item});
         }}>
-        <Message type={item.type} message={item.message} />
+        <Message
+          type={item.type}
+          message={item.message}
+          date={item.date}
+          visualized={item.visualized}
+        />
       </TouchableOpacity>
     );
   }, []);
@@ -99,8 +117,11 @@ export default function Chat(props) {
             setValue('');
             if (value.length > 0) {
               props.registerMessage(value, 'sent', chatId);
-              Mqtt.sendMessage('baeldung', {
-                mqttTopic: chatId,
+              MqttConnection.sendMessage('baeldung', {
+                mqttTopic: {
+                  to: chatId,
+                  from: user.phone,
+                },
                 value: value,
               });
             }

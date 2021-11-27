@@ -1,17 +1,49 @@
 import {} from './middlewares';
 import {convertDate, fromDateToDate, now} from '../../../assets/utils';
 import uuid from 'react-native-uuid';
+import {
+  addNotSeenMessage,
+  cleanNotSeenMessages,
+} from '../../modules/user/Actions';
 
 export function registerMessage(message, type, chatId) {
   return dispatch => {
     try {
       dispatch(mountPayloadMessage(message, type, chatId));
+      if (type == 'received') {
+        dispatch(addNotSeenMessage(chatId));
+      }
+
       //console.log('alo');
     } catch (err) {
       console.log('ee', err);
     }
   };
 }
+
+export function setMessagesAsVisualizedByUser(user) {
+  return dispatch => {
+    try {
+      dispatch(mountSetVisualizedPayload(user));
+      //dispatch(cleanNotSeenMessages(user));
+      //console.log('alo');
+    } catch (err) {
+      console.log('ee', err);
+    }
+  };
+}
+
+export function deleteChat(chatId) {
+  return dispatch => {
+    try {
+      dispatch(mountPayloadDeleteMessage(chatId));
+      //console.log('alo');
+    } catch (err) {
+      console.log('erro ao deletar mensagem', err);
+    }
+  };
+}
+
 export function initChat(chatId) {
   return dispatch => {
     try {
@@ -23,7 +55,25 @@ export function initChat(chatId) {
   };
 }
 
-function mountPayloadMessage(message, type, chatId) {
+function mountSetVisualizedPayload(user) {
+  return {
+    type: 'SET_MESSAGES_AS_VISUALIZED',
+    payload: {
+      user: user,
+    },
+  };
+}
+
+function mountPayloadDeleteMessage(chatId) {
+  return {
+    type: 'CLEAR_CHAT',
+    payload: {
+      chatId: chatId,
+    },
+  };
+}
+
+function mountPayloadMessage(message, type, chatId, visualized = false) {
   return {
     type: 'REGISTER_MESSAGE',
     payload: {
@@ -33,6 +83,7 @@ function mountPayloadMessage(message, type, chatId) {
         id: uuid.v4(),
         message: message,
         date: now(),
+        visualized: false,
       },
     },
   };

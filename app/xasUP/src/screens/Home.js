@@ -18,13 +18,17 @@ import {navigate} from '../Routes';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 export default function Home(props) {
-  console.log('aloo', props.user.contacts);
+  //console.log('aloo', props.user);
+  //console.log('aloo', props.messages);
+
   const RightAction = item => {
     return (
       <TouchableOpacity
         style={{backgroundColor: variables.redVelvet}}
         onPress={() => {
           props.removeContact(item.contactPhone);
+          props.deleteChat(item.contactPhone);
+
           //props.removeFromCart(item.id);
           //navigate('Adicionar Produto', {operation: 'edit', item});
           //console.log('UUID: ', item.uuid);
@@ -50,14 +54,16 @@ export default function Home(props) {
   };
 
   const renderItem = useCallback(({item}) => {
-    //console.log('aaaa', item);
     return (
       <Swipeable renderRightActions={() => RightAction(item)}>
         <TouchableOpacity
           onPress={() => {
             navigate('Chat', {item});
           }}>
-          <Contato name={item.contactName} />
+          <Contato
+            name={item.contactName}
+            notSeenMessages={item.notSeenMessages}
+          />
         </TouchableOpacity>
       </Swipeable>
     );
@@ -77,6 +83,7 @@ export default function Home(props) {
       </View>
       <FlatList
         //keyExtractor={keyExtractor}
+
         style={[styles.mb20]}
         data={props.user.contacts}
         renderItem={renderItem}

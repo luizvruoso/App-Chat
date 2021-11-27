@@ -14,12 +14,13 @@ import {
 import styles from '../../assets/globals';
 import {now, fromDateTimeGetTime} from '../../assets/utils';
 import {variables} from '../../assets/variables';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 export default function Message(props) {
   const message = props.message;
   const type = props.type;
-  const date = props.hasOwnProperty('data') ? props.data : now();
-
+  const date = props.date;
+  const visualized = props.visualized;
   if (type == 'received') {
     return (
       <View style={[styles.flexStart, styles.row, styles.flex1, styles.p5]}>
@@ -98,6 +99,13 @@ export default function Message(props) {
               }}>
               {fromDateTimeGetTime(date).slice(0, 5)}
             </Text>
+            <View style={{marginLeft: 5}}>
+              {visualized ? (
+                <Icon name="md-checkmark-done-sharp" color={'#FFF'} size={20} />
+              ) : (
+                <Icon name="md-checkmark-sharp" color={'#FFF'} size={20} />
+              )}
+            </View>
           </View>
         </View>
       </View>

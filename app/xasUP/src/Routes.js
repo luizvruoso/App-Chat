@@ -59,7 +59,16 @@ export default function Routes(props) {
 
   useEffect(() => {
     const contacts = props.user.contacts;
-    Mqtt.listenTo(contacts, '');
+    //Mqtt.listenTo(contacts, '');
+    /*Mqtt.listenTo(
+      [
+        {
+          contactName: props.user.userInfo.name,
+          contactPhone: props.user.userInfo.phone,
+        },
+      ],
+      '',
+    );*/
   }, [props.user.contacts]);
 
   useEffect(() => {
@@ -67,8 +76,27 @@ export default function Routes(props) {
     /*Mqtt.listenTo('xuzito', msg => {
       console.log('halozion', msg);
     });*/
+    //const mqttConnection = new MqttConnection();
 
-    Mqtt.onMessage(props.registerMessage);
+    Mqtt.init(
+      {
+        contactName: props.user.userInfo.name,
+        contactPhone: props.user.userInfo.phone,
+      },
+      props.registerMessage,
+      props.setMessagesAsVisualizedByUser,
+    );
+
+    //mqtt.onMessage(props.registerMessage);
+    /*Mqtt.listenTo(
+      [
+        {
+          contactName: props.user.userInfo.name,
+          contactPhone: props.user.userInfo.phone,
+        },
+      ],
+      '',
+    );*/
   }, []);
   const routeLogged = () => {
     const {user, setErrorToFalse, setSuccessToFalse} = props;

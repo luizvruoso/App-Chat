@@ -3,7 +3,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const URL_API = {
-  URL: 'http://177.194.52.168:8082',
+  URL: 'http://192.168.0.142:8082',
 };
 
 function ServiceException(message, customMessage = null) {
