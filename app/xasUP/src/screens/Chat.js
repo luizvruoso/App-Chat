@@ -35,11 +35,13 @@ const auxData = [
 ];
 
 export default function Chat(props) {
+  const {item, type} = props.route.params;
   const user = props.user.userInfo;
   const messageData = props.messages;
-  const chatId = props.route.params.item.contactPhone;
+  const chatId = type == 'group' ? item.groupID : item.contactPhone;
   const [value, setValue] = useState('');
   const [indexInArray, setIndexInArray] = useState(0);
+  const [triggerReload, setTriggerReload] = useState(false);
   const flatListRef = React.useRef();
 
   const sendPayloadVisualized = () => {
@@ -54,11 +56,20 @@ export default function Chat(props) {
   };
 
   useEffect(() => {
-    const index = props.messages.findIndex(el => el.chatId == chatId);
-    sendPayloadVisualized();
+    const index = props.messages.findIndex(el => el?.chatId == chatId);
 
-    setIndexInArray(index);
-  }, []);
+    if (index == -1) {
+      props.initChat(chatId);
+
+      setTriggerReload(!triggerReload);
+    } else {
+      console.log('aaa', index, props.messages);
+
+      sendPayloadVisualized();
+
+      setIndexInArray(index);
+    }
+  }, [triggerReload]);
 
   useEffect(() => {
     sendPayloadVisualized();

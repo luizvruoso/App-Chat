@@ -78,11 +78,22 @@ export default function Routes(props) {
     });*/
     //const mqttConnection = new MqttConnection();
 
+    props.getGroups(props.user.userInfo.phone);
+
+    var listSub = [];
+
+    props.user.groups.map(el => {
+      listSub.push({
+        id: el.groupID,
+      });
+    });
+
+    listSub.push({
+      id: props.user.userInfo.phone,
+    });
+
     Mqtt.init(
-      {
-        contactName: props.user.userInfo.name,
-        contactPhone: props.user.userInfo.phone,
-      },
+      listSub,
       props.registerMessage,
       props.setMessagesAsVisualizedByUser,
     );

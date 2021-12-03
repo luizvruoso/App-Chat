@@ -4,6 +4,8 @@ import {
   addContact,
   setErrorToFalse,
   setSuccessToFalse,
+  addGroup,
+  getGroups,
 } from '../store/modules/user/Actions';
 import {initChat, registerMessage} from '../store/modules/messages/Actions';
 const mapStateToProps = state => {
@@ -14,6 +16,12 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = (dispatch, props) => {
   return {
+    getGroups: contactPhone => {
+      return dispatch(getGroups(contactPhone));
+    },
+    addGroup: (groupName, groupMembers) => {
+      return dispatch(addGroup(groupName, groupMembers));
+    },
     addContact: (contactName, contactPhone) => {
       return dispatch(addContact(contactName, contactPhone));
     },

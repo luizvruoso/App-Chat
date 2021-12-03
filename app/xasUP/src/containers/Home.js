@@ -5,6 +5,8 @@ import {
   setSuccessToFalse,
   removeContact,
   addNotSeenMessage,
+  getGroups,
+  leaveGroup,
 } from '../store/modules/user/Actions';
 import {deleteChat} from '../store/modules/messages/Actions';
 
@@ -17,6 +19,12 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = (dispatch, props) => {
   return {
+    leaveGroup: (groupID, contactPhone) => {
+      return dispatch(leaveGroup(groupID, contactPhone));
+    },
+    getGroups: contactPhone => {
+      return dispatch(getGroups(contactPhone));
+    },
     addNotSeenMessage: contactPhone => {
       return dispatch(addNotSeenMessage(contactPhone));
     },

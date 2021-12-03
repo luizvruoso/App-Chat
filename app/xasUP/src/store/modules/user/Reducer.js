@@ -1,4 +1,5 @@
 import produce from 'immer';
+import uuid from 'react-native-uuid';
 
 const INIT_STATE = {
   userInfo: {
@@ -29,6 +30,18 @@ export default function user(state = INIT_STATE, action) {
             if (it == -1) draft.contacts.push(el);
           });
         }
+      });
+
+    case 'SET_GROUP_FROM_PAYLOAD':
+      return produce(state, draft => {
+        draft.groups = action.payload.data;
+      });
+
+    case 'DELETE_GROUP':
+      return produce(state, draft => {
+        draft.groups = draft.groups.filter(
+          el => el.groupID != action.payload.groupID,
+        );
       });
 
     case 'ADD_NOT_SEEN_MESSAGE':

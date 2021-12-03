@@ -4,6 +4,7 @@ import {
   setErrorToFalse,
   setSuccessToFalse,
   registerMessage,
+  initChat,
 } from '../store/modules/messages/Actions';
 
 import {cleanNotSeenMessages} from '../store/modules/user/Actions';
@@ -17,6 +18,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = (dispatch, props) => {
   return {
+    initChat: chatId => {
+      return dispatch(initChat(chatId));
+    },
     cleanNotSeenMessages: chatId => {
       return dispatch(cleanNotSeenMessages(chatId));
     },

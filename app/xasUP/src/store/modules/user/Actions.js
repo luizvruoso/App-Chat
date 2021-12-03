@@ -1,6 +1,12 @@
-import {getUserData} from './middlewares';
+import {
+  getUserData,
+  sendGroupCreate,
+  getGroupsServer,
+  postLeaveGroup,
+} from './middlewares';
 import {convertDate, fromDateToDate, now} from '../../../assets/utils';
 import {fetchAPI} from '../../../service/api';
+import {initChat} from '../messages/Actions';
 
 export function login(name, phone) {
   return async dispatch => {
@@ -53,10 +59,45 @@ export function addContact(contactName, contactPhone) {
   };
 }
 
+export function addGroup(groupName, groupMembers) {
+  return async dispatch => {
+    try {
+      const ret = await sendGroupCreate({groupName, groupMembers});
+      //console.log('ret', ret.data);
+      if (ret.data != null) dispatch(initChat(ret.data.groupID));
+      //dispatch(setNewGroupPayload({groupName, groupMembers}));
+    } catch (err) {
+      console.error('Erro ao criar grupo', err);
+    }
+  };
+}
+
+export function getGroups(contactPhone) {
+  return async dispatch => {
+    try {
+      const ret = await getGroupsServer({contactPhone});
+      if (ret.data != null) dispatch(setNewGroupPayload(ret.data));
+    } catch (err) {
+      console.error('Erro ao criar grupo', err);
+    }
+  };
+}
+
 export function removeContact(contactPhone) {
   return dispatch => {
     try {
       dispatch(setRemoveContactPayload(contactPhone));
+    } catch (err) {
+      console.error('Eror ao remover contato');
+    }
+  };
+}
+
+export function leaveGroup(groupID, contactPhone) {
+  return async dispatch => {
+    try {
+      await postLeaveGroup({groupID, contactPhone});
+      dispatch(removeGroupFromList(groupID));
     } catch (err) {
       console.error('Eror ao remover contato');
     }
@@ -87,6 +128,24 @@ function setContactPayload(data) {
     type: 'SET_NEW_CONTACT',
     payload: {
       contacts: data,
+    },
+  };
+}
+
+function removeGroupFromList(data) {
+  return {
+    type: 'DELETE_GROUP',
+    payload: {
+      groupID: data,
+    },
+  };
+}
+
+function setNewGroupPayload(data) {
+  return {
+    type: 'SET_GROUP_FROM_PAYLOAD',
+    payload: {
+      data: data,
     },
   };
 }

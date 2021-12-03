@@ -33,7 +33,7 @@ export default function Contato(props) {
         <Text>{name}</Text>
       </View>
       <View style={[styles.flex1]}>
-        {countNotSeenMessages != 0 && (
+        {countNotSeenMessages > 0 && (
           <View
             style={[
               {

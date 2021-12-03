@@ -20,14 +20,19 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 export default function Home(props) {
   //console.log('aloo', props.user);
   //console.log('aloo', props.messages);
-
+  const finalData = props.user.contacts.concat(props.user.groups);
   const RightAction = item => {
     return (
       <TouchableOpacity
         style={{backgroundColor: variables.redVelvet}}
         onPress={() => {
-          props.removeContact(item.contactPhone);
-          props.deleteChat(item.contactPhone);
+          if (item.hasOwnProperty('contactName')) {
+            props.removeContact(item.contactPhone);
+            props.deleteChat(item.contactPhone);
+          } else {
+            props.leaveGroup(item.groupID, props.user.userInfo.phone);
+            props.deleteChat(item.groupID);
+          }
 
           //props.removeFromCart(item.id);
           //navigate('Adicionar Produto', {operation: 'edit', item});
@@ -53,16 +58,31 @@ export default function Home(props) {
     );
   };
 
+  useEffect(() => {
+    //console.log('dasdsadas', props.messages);
+  }, []);
+
   const renderItem = useCallback(({item}) => {
     return (
       <Swipeable renderRightActions={() => RightAction(item)}>
         <TouchableOpacity
           onPress={() => {
-            navigate('Chat', {item});
+            navigate('Chat', {
+              item,
+              type: item.hasOwnProperty('contactName')
+                ? 'directMessage'
+                : 'group',
+            });
           }}>
           <Contato
-            name={item.contactName}
-            notSeenMessages={item.notSeenMessages}
+            name={
+              item.hasOwnProperty('contactName')
+                ? item.contactName
+                : item.groupName
+            }
+            notSeenMessages={
+              item.hasOwnProperty('notSeenMessages') ? item.notSeenMessages : 0
+            }
           />
         </TouchableOpacity>
       </Swipeable>
@@ -74,18 +94,28 @@ export default function Home(props) {
       <View style={[styles.row, styles.mx10, styles.my10]}>
         <TouchableOpacity
           onPress={() => {
-            navigate('Adicionar');
+            navigate('Adicionar', {type: 'contact'});
           }}
           style={[styles.row]}>
           <Icon name={'add-circle'} size={30} />
           <Text style={[styles.mx10, {fontSize: 20}]}>Adicionar Contato</Text>
         </TouchableOpacity>
       </View>
+      <View style={[styles.row, styles.mx10, styles.my10]}>
+        <TouchableOpacity
+          onPress={() => {
+            navigate('Adicionar', {type: 'group'});
+          }}
+          style={[styles.row]}>
+          <Icon name={'add-circle'} size={30} />
+          <Text style={[styles.mx10, {fontSize: 20}]}>Adicionar Grupo</Text>
+        </TouchableOpacity>
+      </View>
       <FlatList
         //keyExtractor={keyExtractor}
 
         style={[styles.mb20]}
-        data={props.user.contacts}
+        data={finalData}
         renderItem={renderItem}
       />
     </View>

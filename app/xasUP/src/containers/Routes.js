@@ -4,6 +4,7 @@ import {
   setErrorToFalse,
   setSuccessToFalse,
   addNotSeenMessage,
+  getGroups,
 } from '../store/modules/user/Actions';
 import {
   registerMessage,
@@ -17,6 +18,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = (dispatch, props) => {
   return {
+    getGroups: contactPhone => {
+      return dispatch(getGroups(contactPhone));
+    },
     addNotSeenMessage: contactPhone => {
       return dispatch(addNotSeenMessage(contactPhone));
     },

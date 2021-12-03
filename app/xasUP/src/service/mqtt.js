@@ -3,7 +3,7 @@ var cli = null;
 import uuid from 'react-native-uuid';
 
 class MqttConnection {
-  init(props, callbackRegisterMessage, callbackSetVisualized) {
+  init(arrSub, callbackRegisterMessage, callbackSetVisualized) {
     MQTT.createClient({
       uri: 'mqtt://192.168.0.142:1883',
       clientId: uuid.v4(),
@@ -25,7 +25,11 @@ class MqttConnection {
       });
       client.on('connect', function () {
         console.log('connected');
-        client.subscribe(props.contactPhone, 1);
+
+        arrSub.map(el => {
+          client.subscribe(el.id, 1);
+        });
+
         //client.publish('/data', "test", 0, false);
         cli = client;
       });

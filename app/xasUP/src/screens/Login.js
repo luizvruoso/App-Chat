@@ -31,7 +31,7 @@ export default function Login(props) {
         <View style={[styles.row, styles.centerXY, styles.my10]}>
           <TextInput
             onChangeText={val => setVal(val)}
-            value={formatCel(val)}
+            value={val}
             style={{
               backgroundColor: '#FFF',
               width: '100%',
