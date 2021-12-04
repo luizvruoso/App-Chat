@@ -1,20 +1,84 @@
 {
   "groups": [
     {
-      "groupName": "grupinho do barulho",
+      "groupName": "",
       "groupMembers": [],
-      "groupID": 0,
-      "index": 0
+      "groupID": "3422e1d5-a397-4e80-b5c8-5740a4315f2e"
     },
     {
-      "groupName": "grupinho do barulho 2",
+      "groupName": "safad",
+      "groupMembers": [],
+      "groupID": "0568d12c-01c3-47ce-885c-861942b425c6"
+    },
+    {
+      "groupName": "dsadsa",
+      "groupMembers": [],
+      "groupID": "625d1242-e83b-4799-8f4f-e3bafebda7d3"
+    },
+    {
+      "groupName": "adsa",
+      "groupMembers": [],
+      "groupID": "5726a081-7dbd-4eef-a62b-b07aaf9c91c6"
+    },
+    {
+      "groupName": "aaaa",
+      "groupMembers": [],
+      "groupID": "460f527b-79d6-4ffd-8bfb-45567dea7b44"
+    },
+    {
+      "groupName": "dsadsa",
+      "groupMembers": [],
+      "groupID": "69ab38cf-ff40-48df-8f5b-08095d65fe64"
+    },
+    {
+      "groupName": "dsadsa",
+      "groupMembers": [],
+      "groupID": "ac72966a-3094-49ee-ae27-3f0070eec881"
+    },
+    {
+      "groupName": "dsadsa",
+      "groupMembers": [],
+      "groupID": "aee4562f-7c32-46db-952d-782f7127e4db"
+    },
+    {
+      "groupName": "dsadsa",
+      "groupMembers": [],
+      "groupID": "75a42921-fd2c-4549-9d4f-d8fb84bd183e"
+    },
+    {
+      "groupName": "dsadsa",
+      "groupMembers": [],
+      "groupID": "1955c4b3-0a1d-4ef7-bab4-296e4bf3dedf"
+    },
+    {
+      "groupName": "dsadsa",
+      "groupMembers": [],
+      "groupID": "bf615dba-535b-4593-84d3-29710bda9333"
+    },
+    {
+      "groupName": "sadsa",
+      "groupMembers": [],
+      "groupID": "15fba495-431e-4549-82b8-9679645fc26e"
+    },
+    {
+      "groupName": "sadas",
+      "groupMembers": [],
+      "groupID": "e52e0f35-bd2d-4177-adad-e328ab77b6e3"
+    },
+    {
+      "groupName": "dadsa",
+      "groupMembers": [],
+      "groupID": "7511e2ae-a0e9-404f-910e-67edb96710de"
+    },
+    {
+      "groupName": "dsadsa",
       "groupMembers": [
-        { "contactName": "luizinho fofinho", "contactPhone": "999932123" },
-        { "contactName": "salsichinha gostoso", "contactPhone": "982266665" },
-        { "contactName": "Cleber", "contactPhone": "19993912392" }
+        {
+          "contactName": "Victor",
+          "contactPhone": "19998634441"
+        }
       ],
-      "groupID": 1,
-      "index": 1
+      "groupID": "9fe64577-a762-42aa-bab2-6242f4d66a42"
     }
   ]
 }

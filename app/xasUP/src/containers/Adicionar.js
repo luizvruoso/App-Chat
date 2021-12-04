@@ -6,6 +6,7 @@ import {
   setSuccessToFalse,
   addGroup,
   getGroups,
+  deleteFromPendingApproval,
 } from '../store/modules/user/Actions';
 import {initChat, registerMessage} from '../store/modules/messages/Actions';
 const mapStateToProps = state => {
@@ -16,6 +17,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = (dispatch, props) => {
   return {
+    deleteFromPendingApproval: contactPhone => {
+      return dispatch(deleteFromPendingApproval(contactPhone));
+    },
     getGroups: contactPhone => {
       return dispatch(getGroups(contactPhone));
     },

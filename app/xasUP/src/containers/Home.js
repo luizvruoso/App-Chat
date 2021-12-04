@@ -7,6 +7,7 @@ import {
   addNotSeenMessage,
   getGroups,
   leaveGroup,
+  logoutAction,
 } from '../store/modules/user/Actions';
 import {deleteChat} from '../store/modules/messages/Actions';
 
@@ -19,6 +20,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = (dispatch, props) => {
   return {
+    logoutAction: () => {
+      return dispatch(logoutAction());
+    },
     leaveGroup: (groupID, contactPhone) => {
       return dispatch(leaveGroup(groupID, contactPhone));
     },

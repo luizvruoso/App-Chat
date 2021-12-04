@@ -3,36 +3,67 @@ var cli = null;
 import uuid from 'react-native-uuid';
 
 class MqttConnection {
-  init(arrSub, callbackRegisterMessage, callbackSetVisualized) {
+  init(arrSub, callbacks) {
+    const {
+      registerMessage,
+      setMessagesAsVisualizedByUser,
+      getGroups,
+      basicInfo,
+      addContactPendingForApproval,
+    } = callbacks;
+
     MQTT.createClient({
       uri: 'mqtt://192.168.0.142:1883',
       clientId: uuid.v4(),
     }).then(client => {
-      //console.log('haloo', this.client);
-
       client.on('message', msg => {
         const msgPayload = JSON.parse(msg.data);
-
+        //console.log('Cheou msg', msgPayload);
         if (msgPayload.hasOwnProperty('value')) {
-          callbackRegisterMessage(
-            msgPayload.value,
-            'received',
-            msgPayload.from,
-          );
+          if (basicInfo.personalTopic != msgPayload.from) {
+            // prevent echo de mensagens
+            registerMessage(
+              msgPayload.value,
+              'received',
+              msgPayload.type == 'group' ? msgPayload.to : msgPayload.from,
+              msgPayload.from,
+            );
+          }
         } else {
-          callbackSetVisualized(msgPayload.from);
+          switch (msgPayload.setState) {
+            case 'visualized':
+              setMessagesAsVisualizedByUser(msgPayload.from);
+              break;
+            case 'fetchForNewGroups':
+              getGroups();
+              break;
+            case 'newContactPendingApproval':
+              addContactPendingForApproval(
+                msgPayload.extraData.contactName,
+                msgPayload.from,
+              );
+              break;
+            case 'notify_UserRefusedAddContact':
+              registerMessage(
+                'XASUP: Usuário não quer ser seu amigo.',
+                'received',
+                msgPayload.from,
+                msgPayload.from,
+              );
+              break;
+          }
         }
       });
+
       client.on('connect', function () {
         console.log('connected');
 
         arrSub.map(el => {
           client.subscribe(el.id, 1);
         });
-
-        //client.publish('/data', "test", 0, false);
         cli = client;
       });
+
       client.connect();
     });
   }
@@ -56,6 +87,14 @@ class MqttConnection {
   sendMessage(topic, message) {
     console.log('payload', JSON.stringify(message));
     cli.publish(topic, JSON.stringify(message), 0, true);
+  }
+
+  setSubscriptions(list) {
+    if (cli != null) {
+      list.map(el => {
+        cli.subscribe(el.id, 1);
+      });
+    }
   }
 }
 

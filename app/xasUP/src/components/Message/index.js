@@ -17,10 +17,13 @@ import {variables} from '../../assets/variables';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 export default function Message(props) {
+  const chatType = props.chatType;
   const message = props.message;
   const type = props.type;
   const date = props.date;
   const visualized = props.visualized;
+  const fromWho = props.fromWho;
+
   if (type == 'received') {
     return (
       <View style={[styles.flexStart, styles.row, styles.flex1, styles.p5]}>
@@ -38,6 +41,18 @@ export default function Message(props) {
               backgroundColor: '#CCC',
             },
           ]}>
+          {chatType == 'group' && fromWho != undefined && (
+            <View style={[styles.row]}>
+              <Text
+                style={{
+                  fontWeight: '500',
+                  color: '#000',
+                  fontSize: variables.fontChat - 4,
+                }}>
+                {fromWho}
+              </Text>
+            </View>
+          )}
           <View style={[styles.row]}>
             <Text
               style={{

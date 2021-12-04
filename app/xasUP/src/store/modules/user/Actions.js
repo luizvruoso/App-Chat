@@ -34,6 +34,21 @@ export function addNotSeenMessage(contactPhone) {
   };
 }
 
+export function deleteFromPendingApproval(contactPhone) {
+  return async dispatch => {
+    try {
+      dispatch({
+        type: 'DELETE_CONTACT_PENDING_APPROVAL',
+        payload: {
+          contactPhone,
+        },
+      });
+    } catch (err) {
+      console.error('Eror ao retirar usuario de pendencia de aprovação', err);
+    }
+  };
+}
+
 export function cleanNotSeenMessages(contactPhone) {
   return async dispatch => {
     try {
@@ -54,7 +69,18 @@ export function addContact(contactName, contactPhone) {
     try {
       dispatch(setContactPayload([{contactName, contactPhone}]));
     } catch (err) {
-      console.error('Eror ao inserir contato', err);
+      console.error('Erro ao inserir contato', err);
+    }
+  };
+}
+
+export function addContactPendingForApproval(contactName, contactPhone) {
+  return dispatch => {
+    try {
+      dispatch(setPendingApprovalContactPayload({contactName, contactPhone}));
+      console.log('contato pendete de aprovação', {contactName, contactPhone});
+    } catch (err) {
+      console.error('Erro ao adicionar contato pendente de aprovação', err);
     }
   };
 }
@@ -104,6 +130,13 @@ export function leaveGroup(groupID, contactPhone) {
   };
 }
 
+export function logoutAction() {
+  return {
+    type: 'SET_LOGOUT',
+    payload: {},
+  };
+}
+
 function setLoginSucessPayload(data) {
   return {
     type: 'SET_LOGIN_SUCCESS',
@@ -126,6 +159,15 @@ function setRemoveContactPayload(data) {
 function setContactPayload(data) {
   return {
     type: 'SET_NEW_CONTACT',
+    payload: {
+      contacts: data,
+    },
+  };
+}
+
+function setPendingApprovalContactPayload(data) {
+  return {
+    type: 'SET_NEW_CONTACT_PENDING_APPROVAL',
     payload: {
       contacts: data,
     },
