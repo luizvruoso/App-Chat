@@ -1,3 +1,4 @@
+import {DrawerItem} from '@react-navigation/drawer';
 import React, {Component, useEffect, useState} from 'react';
 import {
   View,
@@ -15,6 +16,7 @@ import styles from '../../assets/globals';
 import {variables} from '../../assets/variables';
 export default function Contato(props) {
   const name = props.name;
+  const contactType = props.contactType;
   const countNotSeenMessages = props.notSeenMessages;
   return (
     <View
@@ -26,7 +28,11 @@ export default function Contato(props) {
             height: 40,
             width: 40,
           }}
-          source={require('../../assets/img/profile-user.png')}
+          source={
+            contactType == 'groupContact'
+              ? require('../../assets/img/contactGroupIcon.png')
+              : require('../../assets/img/contactUserIcon.png')
+          }
         />
       </View>
       <View style={[styles.flex2, styles.centerY]}>

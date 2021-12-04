@@ -390,4 +390,9 @@ export default styles = StyleSheet.create({
     marginBottom: 50,
     marginTop: 50,
   },
+  verticleLine: {
+    height: '100%',
+    width: 1,
+    backgroundColor: '#909090',
+  },
 });
