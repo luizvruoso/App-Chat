@@ -32,9 +32,17 @@ export default function Adicionar(props) {
     fetchData = async () => {
       try {
         var auxData = await fetchAPI('GET', '/getAllUsers', null, null);
+        // props.user.contacts /.userinfo.phone
 
-        var final = auxData.data.filter(
+        var contactsWithoutOwn = auxData.data.filter(
           el => el.contactPhone != props.user.userInfo.phone,
+        );
+
+        const final = contactsWithoutOwn.filter(
+          ({contactName: a, contactPhone: x}) =>
+            !props.user.contacts.some(
+              ({contactName: b, contactPhone: y}) => a === b && x === y,
+            ),
         );
 
         setData(final);

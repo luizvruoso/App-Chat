@@ -83,6 +83,11 @@ export default function Home(props) {
             notSeenMessages={
               item.hasOwnProperty('notSeenMessages') ? item.notSeenMessages : 0
             }
+            contactType={
+              item.hasOwnProperty('contactName')
+                ? 'userContact'
+                : 'groupContact'
+            }
           />
         </TouchableOpacity>
       </Swipeable>
@@ -91,30 +96,45 @@ export default function Home(props) {
 
   return (
     <View style={{flex: 1}}>
-      <View style={[styles.row, styles.mx10, styles.my10]}>
-        <TouchableOpacity
-          onPress={() => {
-            navigate('Adicionar', {type: 'contact'});
-          }}
-          style={[styles.row]}>
-          <Icon name={'add-circle'} size={30} />
-          <Text style={[styles.mx10, {fontSize: 20}]}>Adicionar Contato</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={[styles.row, styles.mx10, styles.my10]}>
-        <TouchableOpacity
-          onPress={() => {
-            navigate('Adicionar', {type: 'group'});
-          }}
-          style={[styles.row]}>
-          <Icon name={'add-circle'} size={30} />
-          <Text style={[styles.mx10, {fontSize: 20}]}>Adicionar Grupo</Text>
-        </TouchableOpacity>
+      <View
+        style={[styles.mx10, styles.row, styles.my10, {flexDirection: 'row'}]}>
+        <View style={{flex: 1}}>
+          <TouchableOpacity
+            onPress={() => {
+              navigate('Adicionar', {type: 'contact'});
+            }}
+            style={[styles.row]}>
+            <Icon name={'person-add'} size={20} />
+            <Text style={[styles.mx5, {fontSize: 15}]}>Novo Contato</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={[styles.verticleLine, styles.mr5, styles.ml5]}></View>
+        <View style={{flex: 1}}>
+          <TouchableOpacity
+            onPress={() => {
+              navigate('Adicionar', {type: 'group'});
+            }}
+            style={[styles.row]}>
+            <Icon name={'group-add'} size={22} />
+            <Text style={[styles.mx5, {fontSize: 15}]}>Novo Grupo</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={[styles.verticleLine, styles.mr5]}></View>
+        <View style={{flex: 1}}>
+          <TouchableOpacity
+            onPress={() => {
+              // navigate('Adicionar', {type: 'group'});
+            }}
+            style={[styles.row]}>
+            <Icon name={'agriculture'} size={22} />
+            <Text style={[styles.mx5, {fontSize: 15}]}>swift >> react</Text>
+          </TouchableOpacity>
+        </View>
       </View>
       <FlatList
         //keyExtractor={keyExtractor}
 
-        style={[styles.mb20]}
+        style={[styles.mb50]}
         data={finalData}
         renderItem={renderItem}
       />
