@@ -16,6 +16,7 @@ import {Swipeable} from 'react-native-gesture-handler';
 import {variables} from '../assets/variables';
 import {navigate} from '../Routes';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function Home(props) {
   //console.log('aloo', props.user);
@@ -58,9 +59,7 @@ export default function Home(props) {
     );
   };
 
-  useEffect(() => {
-    //console.log('dasdsadas', props.messages);
-  }, []);
+  useEffect(() => {}, []);
 
   const renderItem = useCallback(({item}) => {
     return (
@@ -96,9 +95,8 @@ export default function Home(props) {
 
   return (
     <View style={{flex: 1}}>
-      <View
-        style={[styles.mx10, styles.row, styles.my10, {flexDirection: 'row'}]}>
-        <View style={{flex: 1}}>
+      <View style={[styles.mx10, styles.row, styles.my10, ,]}>
+        <View style={{flex: 2}}>
           <TouchableOpacity
             onPress={() => {
               navigate('Adicionar', {type: 'contact'});
@@ -109,7 +107,7 @@ export default function Home(props) {
           </TouchableOpacity>
         </View>
         <View style={[styles.verticleLine, styles.mr5, styles.ml5]}></View>
-        <View style={{flex: 1}}>
+        <View style={{flex: 2}}>
           <TouchableOpacity
             onPress={() => {
               navigate('Adicionar', {type: 'group'});
@@ -120,17 +118,34 @@ export default function Home(props) {
           </TouchableOpacity>
         </View>
         <View style={[styles.verticleLine, styles.mr5]}></View>
-        <View style={{flex: 1}}>
+        <View style={[{flex: 2}, styles.centerXY]}>
           <TouchableOpacity
             onPress={() => {
               // navigate('Adicionar', {type: 'group'});
+              props.logoutAction();
             }}
             style={[styles.row]}>
-            <Icon name={'agriculture'} size={22} />
-            <Text style={[styles.mx5, {fontSize: 15}]}>swift >> react</Text>
+            <Icon name={'logout'} size={22} />
+            <Text style={[styles.mx5, {fontSize: 15}]}>Logout</Text>
           </TouchableOpacity>
         </View>
       </View>
+
+      {Array.isArray(props.user.contactsPendingApproval) &&
+        props.user.contactsPendingApproval.length > 0 && (
+          <View style={[styles.mx10, styles.row, styles.my20, styles.centerXY]}>
+            <TouchableOpacity
+              onPress={() => {
+                navigate('Adicionar', {type: 'manageContacts'});
+              }}
+              style={[styles.row]}>
+              <MaterialCommunityIcons name={'alert-circle-outline'} size={20} />
+              <Text style={[styles.mx5, {fontSize: 15}]}>
+                Existem contatos pendentes de aprovação
+              </Text>
+            </TouchableOpacity>
+          </View>
+        )}
       <FlatList
         //keyExtractor={keyExtractor}
 

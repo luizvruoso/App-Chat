@@ -63,8 +63,6 @@ export default function Chat(props) {
 
       setTriggerReload(!triggerReload);
     } else {
-      console.log('aaa', index, props.messages);
-
       sendPayloadVisualized();
 
       setIndexInArray(index);
@@ -75,18 +73,28 @@ export default function Chat(props) {
     sendPayloadVisualized();
   }, [messageData[indexInArray]]);
 
+  getContactNameFromId = id => {
+    const {contacts} = props.user;
+
+    const index = contacts.findIndex(el => el.contactPhone == id);
+
+    if (index != -1) return contacts[index].contactName;
+    else return id;
+  };
+
   const renderItem = useCallback(({item}) => {
-    //console.log('aaaa', item);
     return (
       <TouchableOpacity
         onPress={() => {
           //navigate('DetailsMonitor', {item});
         }}>
         <Message
+          chatType={type}
           type={item.type}
           message={item.message}
           date={item.date}
           visualized={item.visualized}
+          fromWho={getContactNameFromId(item.fromWho)}
         />
       </TouchableOpacity>
     );
@@ -130,6 +138,7 @@ export default function Chat(props) {
               props.registerMessage(value, 'sent', chatId);
               MqttConnection.sendMessage('baeldung', {
                 mqttTopic: {
+                  type: type,
                   to: chatId,
                   from: user.phone,
                 },

@@ -5,6 +5,7 @@ import {
   setSuccessToFalse,
   addNotSeenMessage,
   getGroups,
+  addContactPendingForApproval,
 } from '../store/modules/user/Actions';
 import {
   registerMessage,
@@ -24,8 +25,11 @@ const mapDispatchToProps = (dispatch, props) => {
     addNotSeenMessage: contactPhone => {
       return dispatch(addNotSeenMessage(contactPhone));
     },
-    registerMessage: (message, type, chatId) => {
-      return dispatch(registerMessage(message, type, chatId));
+    addContactPendingForApproval: (contactName, contactPhone) => {
+      return dispatch(addContactPendingForApproval(contactName, contactPhone));
+    },
+    registerMessage: (message, type, chatId, fromWho) => {
+      return dispatch(registerMessage(message, type, chatId, fromWho));
     },
     setErrorToFalse: () => {
       return dispatch(setErrorToFalse());

@@ -10,6 +10,7 @@ const INIT_STATE = {
   },
   contacts: [],
   groups: [],
+  contactsPendingApproval: [],
   error: false,
   loading: false,
   success: false,
@@ -31,7 +32,23 @@ export default function user(state = INIT_STATE, action) {
           });
         }
       });
+    case 'SET_NEW_CONTACT_PENDING_APPROVAL':
+      return produce(state, draft => {
+        const data = action.payload.contacts;
 
+        const it = draft.contactsPendingApproval.findIndex(
+          dC => dC.contactPhone == data.contactPhone,
+        );
+        if (it == -1) draft.contactsPendingApproval.push(data);
+      });
+    case 'DELETE_CONTACT_PENDING_APPROVAL':
+      return produce(state, draft => {
+        const contactPhone = action.payload.contactPhone;
+
+        draft.contactsPendingApproval = draft.contactsPendingApproval.filter(
+          dC => dC.contactPhone != contactPhone,
+        );
+      });
     case 'SET_GROUP_FROM_PAYLOAD':
       return produce(state, draft => {
         draft.groups = action.payload.data;
@@ -46,13 +63,26 @@ export default function user(state = INIT_STATE, action) {
 
     case 'ADD_NOT_SEEN_MESSAGE':
       return produce(state, draft => {
-        contactPhone = action.payload.contactPhone;
+        const contactPhone = action.payload.contactPhone;
+
         for (let i = 0; i < draft.contacts.length; i++) {
           if (draft.contacts[i].contactPhone == contactPhone) {
             if (draft.contacts[i].hasOwnProperty('notSeenMessages')) {
               draft.contacts[i].notSeenMessages += 1;
             } else {
               draft.contacts[i].notSeenMessages = 1;
+            }
+          }
+        }
+
+        // O mesmo deve ser feito para os grupos
+
+        for (let i = 0; i < draft.groups.length; i++) {
+          if (draft.groups[i].groupID == contactPhone) {
+            if (draft.groups[i].hasOwnProperty('notSeenMessages')) {
+              draft.groups[i].notSeenMessages += 1;
+            } else {
+              draft.groups[i].notSeenMessages = 1;
             }
           }
         }

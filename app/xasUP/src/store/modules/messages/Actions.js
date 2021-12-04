@@ -6,10 +6,10 @@ import {
   cleanNotSeenMessages,
 } from '../../modules/user/Actions';
 
-export function registerMessage(message, type, chatId) {
+export function registerMessage(message, type, chatId, fromWho) {
   return dispatch => {
     try {
-      dispatch(mountPayloadMessage(message, type, chatId));
+      dispatch(mountPayloadMessage(message, type, chatId, fromWho));
       if (type == 'received') {
         dispatch(addNotSeenMessage(chatId));
       }
@@ -73,7 +73,7 @@ function mountPayloadDeleteMessage(chatId) {
   };
 }
 
-function mountPayloadMessage(message, type, chatId, visualized = false) {
+function mountPayloadMessage(message, type, chatId, fromWho) {
   return {
     type: 'REGISTER_MESSAGE',
     payload: {
@@ -84,6 +84,7 @@ function mountPayloadMessage(message, type, chatId, visualized = false) {
         message: message,
         date: now(),
         visualized: false,
+        fromWho: fromWho,
       },
     },
   };
