@@ -45,7 +45,7 @@ Em seguida, abra o cmd na pasta que contém o arquivo JSON e rode: ```curl -d @<
 - Agora, após ter iniciado o emulador de celular, vá apara a pastar app/xasUP e rode ```npx react-native run-android```
 - Pronto, a aplicação está funcionando. Aproveite e converse com seus amigos ;)
 
-#Testes
+## Testes
 Algumas formas de testes podem ser vistas no video em que mostramos o funcionamento da aplicação: https://youtu.be/5ewvsn4_m7k
 
 ## Diagrama de arquitetura do serviço
