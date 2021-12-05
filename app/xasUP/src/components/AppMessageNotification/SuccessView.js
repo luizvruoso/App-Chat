@@ -1,8 +1,3 @@
-/*
- * Para utilzação é necessaria a configuração do Firebase para android
- * Esses dados configurados sao importados aqui indiretamente
- **/
-
 import React, {useEffect, useState} from 'react';
 import {Alert, Text, View, Pressable} from 'react-native';
 import {fetchAPI} from '../../services/api';
@@ -10,28 +5,29 @@ import styles from '../../assets/globals.js';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {variables} from '../../assets/variables';
 
-function OnlineModal(props) {
-  const [networkState, setNetworkState] = useState(null);
-  const [nChange, setNChange] = useState(0);
-
-  const [showMessage, setShowMessage] = useState(props.isVisible);
+function SuccessView(props) {
   return (
     <View>
       <View>
         <View
           style={[
             styles.centerXY,
-            styles.absolute,
-            {top: 0, zIndex: 999999},
-            styles.mt10,
-            styles.fullWidth,
+            {
+              paddingBottom: 10,
+              bottom: 0,
+              zIndex: 999999,
+              position: 'absolute',
+              width: '100%',
+              //height: 80,
+              opacity: 1,
+              //flex: 1,
+            },
+            //styles.mt10,
           ]}>
           <View
             style={[
-              styles.modalViewSm,
-              styles.spaceBetween,
               {
-                height: 60,
+                minHeight: 60,
                 backgroundColor: '#88b648',
 
                 opacity: 1,
@@ -39,20 +35,16 @@ function OnlineModal(props) {
               styles.centerXY,
             ]}>
             <View style={[styles.p10, styles.row]}>
-              <View style={[styles.flex1, styles.centerXY]}>
-                <Icon
-                  name="check-circle-outline"
-                  size={variables.icon}
-                  color={'white'}
-                />
+              <View style={[{flex: 1}, styles.centerXY]}>
+                <Icon name="check-circle-outline" size={23} color={'white'} />
               </View>
-              <View style={[styles.flex5, styles.centerY]}>
+              <View style={[{flex: 5}, styles.centerY]}>
                 <Text
                   style={[
                     styles.pl5,
 
                     styles.textVerticalCenter,
-                    {color: 'white', fontSize: variables.fontNormal},
+                    {color: 'white', fontSize: 18},
                   ]}>
                   {props.message}
                 </Text>
@@ -65,4 +57,4 @@ function OnlineModal(props) {
   );
 }
 
-export default OnlineModal;
+export default SuccessView;

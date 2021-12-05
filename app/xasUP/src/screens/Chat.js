@@ -94,6 +94,7 @@ export default function Chat(props) {
           message={item.message}
           date={item.date}
           visualized={item.visualized}
+          delivered={item.delivered}
           fromWho={getContactNameFromId(item.fromWho)}
         />
       </TouchableOpacity>
@@ -135,15 +136,7 @@ export default function Chat(props) {
           onPress={() => {
             setValue('');
             if (value.length > 0) {
-              props.registerMessage(value, 'sent', chatId);
-              MqttConnection.sendMessage('baeldung', {
-                mqttTopic: {
-                  type: type,
-                  to: chatId,
-                  from: user.phone,
-                },
-                value: value,
-              });
+              props.registerMessage(value, 'sent', chatId, user.phone, type);
             }
           }}>
           <Icon name="send-circle" size={40} />

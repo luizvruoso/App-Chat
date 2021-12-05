@@ -72,13 +72,23 @@
     },
     {
       "groupName": "dsadsa",
+      "groupMembers": [],
+      "groupID": "9fe64577-a762-42aa-bab2-6242f4d66a42"
+    },
+    {
+      "groupName": "sadsadsa",
+      "groupMembers": [],
+      "groupID": "68656084-559a-4944-8456-03a320a0457f"
+    },
+    {
+      "groupName": "Salsa grupo",
       "groupMembers": [
         {
-          "contactName": "Victor",
-          "contactPhone": "19998634441"
+          "contactName": "Luiz",
+          "contactPhone": "19998634442"
         }
       ],
-      "groupID": "9fe64577-a762-42aa-bab2-6242f4d66a42"
+      "groupID": "f2c1f727-39ec-477f-92ae-b60ba6cffeeb"
     }
   ]
 }
