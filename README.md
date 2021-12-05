@@ -1,22 +1,55 @@
-# Enunciado
+# XasUP
+## O melhor whatsapp falso ;)
 
-Em um planeta muiiiito muiiiiiiito distante, chamado Xastre Planet, os xastráqueos elevaram o nível de comunicação usando um sistema de comunicação que ficou bastante popular o XasUp APP.
+## Pré-requisitos
 
-Esse sistema é bastante simples, pois possibilita aos xastráqueos trocarem xassagens entre eles, texto apenas!
+- [Docker](https://www.docker.com/products/docker-desktop)
+- [Node](https://nodejs.org/en/download/)
+- [React Native](https://reactnative.dev/docs/environment-setup)
+- [Android Studio](https://developer.android.com/studio) (Para emular a aplicação) - ou algum outro de sua preferência.
 
-Só é possível trocar xassagens entre xastráqueos que autorizaram essa troca, ou seja, deve existir uma funcionalidade de pedir e receber (ou não) autorização de adicionar o xastato dos xastráqueos. É possível também, a qualquer momento, revogar essa autorização. Porém, o que mais chamou a atenção dos xastráqueos foi a possibilidade de se criar xasgrupos e fazer com que as xassagens saiam de um xastraqueo e vá para todos do grupo. Por fim, existe uma forma de verificar se a xassagem chegou até o destinatário e também se ela foi lida ou não, isso é disponível apenas em mensagens ponto a ponto, não em grupo.
+## Instalação
 
-Só que existe um problema, a demanda lá no Xastre Planet ficou muito grande e o aplicativo como foi concebido não suporta mais nenhum usuário novo, por isso, os xastráqueos donos do XasUp APP querem contratar um grupo de terráqueos para propor uma nova arquitetura e uma solução que pode ser escalável.
+Primeiramente, faremos a configuração do Docker para utilização do MQTT:
 
-O grupo escolhido foi o seu, parabéns pela oportunidade!
+- Navegue até o local onde se encontra o arquivo docker-compose.yml
+- Abra o terminal de sua preferência, e nele escreva: ```docker-compose up --build -d``` (Tenha certeza que as portas usadas pelo docker não estão sendo usadas) - com este comando, subiremos quatro serviços - O kafka, o mosquitto, zookeeper e o kafka connect;  .
+- Após o término do comando, abra o Docker, no caso, o Desktop (para Windows) e entre no terminal do serviço kafka-connect, nele, use o comando su, para conseguir privilégios de root.
+- Em seguida, rode o seguinte comando: ```confluent-hub install confluentinc/kafka-connect-mqtt:1.5.1```, pressionando: 2, 'Y', 'Y', 'Y' respectivamente.
+- Agora, iremos para a pasta que o comando acabou de baixar, que contém os jars que utilizaremos: ```cd /usr/share/confluent-hub-components/lib```
+- Em seguida, já dentro da pasta lib, rodamos o comando: ``` cp -R * /etc/kafka-connect/jars``` e reiniciamos o container kafka-connect do docker.
+- Dentro de uma pasta qualquer, crie um arquivo com o seguinte conteúdo, em formato JSON: 
+```
+{
+    "name": "mqtt-source",
+    "config": {
+        "connector.class": "io.confluent.connect.mqtt.MqttSourceConnector",
+        "tasks.max": 1,
+        "mqtt.server.uri": "tcp://mosquitto:1883",
+        "mqtt.topics": "baeldung",
+        "kafka.topic": "connect-custom",
+        "value.converter": "org.apache.kafka.connect.converters.ByteArrayConverter",
+        "confluent.topic.bootstrap.servers": "kafka:9092",
+        "confluent.topic.replication.factor": 1
+    }
+}
+```
 
- 
+Em seguida, abra o cmd na pasta que contém o arquivo JSON e rode: ```curl -d @<caminho_para_o_arquivo>/nome_do_arquivo.json -H "Content-Type: application/json" -X POST http://localhost:8083/connectors```
 
-## Nota técnica:
-1. Estudar e implementar MQTT (servidor mosquitto - exemplo aqui (Links para um site externo.))
-2. Existem protocolos mais parrudos do que o MQTT, tal como explicado aqui (Links para um site externo.).
-3. Leve em consideração uma arquitetura de mensageria para suportar um fluxo grande de informações, usando o Zookeeper (Links para um site externo.) e Kafka (Links para um site externo.). Podem considerar outras possibilidades.
-4. Não é necessário guardar nenhuma mensagem em banco.
-5. Podem usar qualquer linguagem de sua preferência para fazer as interfaces gráficas para os xastráqueos escreverem e lerem as mensagens.
-6. Sugiro a adoção de dockers para os ambientes de configurados de servidores.
-7. API em nodeJS
+- Se tudo estiver funcionando, deverá receber uma resposta como: ```{"name":"mqtt-source","config":{"connector.class":"io.confluent.connect.mqtt.MqttSourceConnector","tasks.max":"1","mqtt.server.uri":"tcp://mosquitto:1883","mqtt.topics":"baeldung","kafka.topic":"connect-custom","value.converter":"org.apache.kafka.connect.converters.ByteArrayConverter","confluent.topic.bootstrap.servers":"kafka:9092","confluent.topic.replication.factor":"1","name":"mqtt-source"},"tasks":[],"type":null}```
+- Após, abriremos os arquivos do código baixado e, trocaremos o IP para o IPV4 de nosso máquina, em dois locais  ```\app\xasUP\src\service\api.js``` e ```\app\xasUP\src\service\mqtt.js```
+
+- Agora, em cada umas das três partes, instalaremos as dependências do Node usando o comando ```npm i``` (app\xasUP, messagesMiddleware e server).
+- Navegaremos para a pasta do messagesMiddleware e rodaremos o comando ```npm start``` - faça o mesmo na pasta server
+- Agora, após ter iniciado o emulador de celular, vá apara a pastar app/xasUP e rode ```npx react-native run-android```
+- Pronto, a aplicação está funcionando. Aproveite e converse com seus amigos ;)
+
+## Diagrama de arquitetura do serviço
+
+
+
+## License
+
+MIT
+
