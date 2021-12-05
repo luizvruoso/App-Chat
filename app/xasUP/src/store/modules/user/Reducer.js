@@ -97,6 +97,16 @@ export default function user(state = INIT_STATE, action) {
             }
           }
         }
+
+        // O mesmo deve ser feito para os grupos
+
+        for (let i = 0; i < draft.groups.length; i++) {
+          if (draft.groups[i].groupID == contactPhone) {
+            if (draft.groups[i]?.notSeenMessages) {
+              draft.groups[i].notSeenMessages = 0;
+            }
+          }
+        }
       });
     case 'SET_LOGIN_SUCCESS':
       return produce(state, draft => {

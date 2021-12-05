@@ -22,6 +22,7 @@ export default function Message(props) {
   const type = props.type;
   const date = props.date;
   const visualized = props.visualized;
+  const delivered = props.delivered;
   const fromWho = props.fromWho;
 
   if (type == 'received') {
@@ -116,9 +117,15 @@ export default function Message(props) {
             </Text>
             <View style={{marginLeft: 5}}>
               {visualized ? (
-                <Icon name="md-checkmark-done-sharp" color={'#FFF'} size={20} />
-              ) : (
+                <Icon
+                  name="md-checkmark-done-sharp"
+                  color={'#097089'}
+                  size={20}
+                />
+              ) : !delivered ? (
                 <Icon name="md-checkmark-sharp" color={'#FFF'} size={20} />
+              ) : (
+                <Icon name="md-checkmark-done-sharp" color={'#FFF'} size={20} />
               )}
             </View>
           </View>

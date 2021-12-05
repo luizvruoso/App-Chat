@@ -4,8 +4,8 @@ import {fetchAPI} from '../../services/api';
 import styles from '../../assets/globals.js';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {variables} from '../../assets/variables';
-import ModalInfo from './ModalInfo';
-import ModalInfoSuccess from './ModalInfoSuccess';
+import AlertView from './AlertView';
+import SuccessView from './SuccessView';
 
 function index(props) {
   const [showMessage, setShowMessage] = useState(false);
@@ -13,36 +13,36 @@ function index(props) {
   const [messageSuccess, setMessageSuccess] = useState(false);
 
   useEffect(() => {
-    const {user, setErrorToFalse, setSuccessToFalse} = props;
-    if (user.error == true) {
+    const {controller, setErrorToFalse, setSuccessToFalse} = props;
+    if (controller.error == true) {
       setShowMessage(true);
-      setMessage(props.user.message);
+      setMessage(props.controller.message);
 
       setTimeout(() => {
         setShowMessage(false);
         setErrorToFalse();
       }, 5000);
     }
-  }, [props.user.error]);
+  }, [props.controller.error]);
 
   useEffect(() => {
-    const {user, setErrorToFalse, setSuccessToFalse} = props;
+    const {controller, setErrorToFalse, setSuccessToFalse} = props;
 
-    if (user.success == true) {
+    if (controller.success == true) {
       setMessageSuccess(true);
-      setMessage(props.user.message);
+      setMessage(props.controller.message);
 
       setTimeout(() => {
         setMessageSuccess(false);
         setSuccessToFalse();
       }, 3000);
     }
-  }, [props.user.success]);
+  }, [props.controller.success]);
 
   return (
     <View>
       {showMessage ? (
-        <ModalInfo
+        <AlertView
           isVisible={showMessage}
           setModal={status => setShowMessage(status)}
           message={message}
@@ -51,7 +51,7 @@ function index(props) {
         <View></View>
       )}
       {messageSuccess ? (
-        <ModalInfoSuccess
+        <SuccessView
           isVisible={messageSuccess}
           setModal={status => setMessageSuccess(status)}
           message={message}

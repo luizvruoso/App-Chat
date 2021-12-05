@@ -18,7 +18,7 @@ import {variables} from '../assets/variables';
 import {navigate} from '../Routes';
 import {fetchAPI} from '../service/api';
 import CheckBox from '@react-native-community/checkbox';
-import MqttConnection from '../service/mqtt';
+import MqttConnection, {chatAction} from '../service/mqtt';
 
 var globalData = [];
 export default function Adicionar(props) {
@@ -86,7 +86,8 @@ export default function Adicionar(props) {
             extraData: {
               contactName: props.user.userInfo.name,
             },
-            setState: 'newContactPendingApproval',
+            setState: chatAction.notify.addContact.pendingApproval,
+            //setState: 'newContactPendingApproval',
           });
           navigate('XASUP');
         }}>
@@ -138,7 +139,8 @@ export default function Adicionar(props) {
               extraData: {
                 contactName: props.user.userInfo.name,
               },
-              setState: 'notify_UserRefusedAddContact',
+              // setState: 'notify_UserRefusedAddContact',
+              setState: chatAction.notify.addContact.refused,
             });
             navigate('XASUP');
           }}>
@@ -276,7 +278,7 @@ export default function Adicionar(props) {
         <View style={[styles.row, styles.my10, styles.mx10]}>
           <TouchableOpacity
             onPress={() => {
-              if (val.length > 5) {
+              if (groupName.length > 5) {
                 let aux = arrUsersSelected;
 
                 aux.push({
@@ -294,7 +296,8 @@ export default function Adicionar(props) {
                       to: el.contactPhone,
                       from: props.user.userInfo.phone,
                     },
-                    setState: 'fetchForNewGroups',
+                    // setState: 'fetchForNewGroups',
+                    setState: chatAction.fetchForNewGroups,
                   });
                 });
 

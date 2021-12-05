@@ -4,6 +4,7 @@ import {
   getGroupsServer,
   postLeaveGroup,
 } from './middlewares';
+import {setSuccessMessage, setErrorMessage} from '../inAppNotification/Actions';
 import {convertDate, fromDateToDate, now} from '../../../assets/utils';
 import {fetchAPI} from '../../../service/api';
 import {initChat} from '../messages/Actions';
@@ -44,6 +45,7 @@ export function deleteFromPendingApproval(contactPhone) {
         },
       });
     } catch (err) {
+      dispatch(setErrorMessage('Erro ao excluir contato'));
       console.error('Eror ao retirar usuario de pendencia de aprovação', err);
     }
   };
@@ -59,7 +61,7 @@ export function cleanNotSeenMessages(contactPhone) {
         },
       });
     } catch (err) {
-      console.error('Eror ao inserir contato', err);
+      console.error('Erro ao realizar operação', err);
     }
   };
 }
@@ -68,6 +70,7 @@ export function addContact(contactName, contactPhone) {
   return dispatch => {
     try {
       dispatch(setContactPayload([{contactName, contactPhone}]));
+      dispatch(setSuccessMessage('Convite enviado! Aguarde a aprovação'));
     } catch (err) {
       console.error('Erro ao inserir contato', err);
     }
@@ -78,8 +81,13 @@ export function addContactPendingForApproval(contactName, contactPhone) {
   return dispatch => {
     try {
       dispatch(setPendingApprovalContactPayload({contactName, contactPhone}));
-      console.log('contato pendete de aprovação', {contactName, contactPhone});
+
+      //console.log('contato pendete de aprovação', {contactName, contactPhone});
     } catch (err) {
+      dispatch(
+        setErrorMessage('Erro ao enviar convite. Tente novamente mais tarde.'),
+      );
+
       console.error('Erro ao adicionar contato pendente de aprovação', err);
     }
   };
@@ -90,9 +98,14 @@ export function addGroup(groupName, groupMembers) {
     try {
       const ret = await sendGroupCreate({groupName, groupMembers});
       //console.log('ret', ret.data);
-      if (ret.data != null) dispatch(initChat(ret.data.groupID));
-      //dispatch(setNewGroupPayload({groupName, groupMembers}));
+      if (ret.data != null) {
+        dispatch(initChat(ret.data.groupID));
+        dispatch(setSuccessMessage('Grupo criado com sucesso!'));
+      }
     } catch (err) {
+      dispatch(
+        setErrorMessage('Erro ao criar grupo. Tente novamente mais tarde.'),
+      );
       console.error('Erro ao criar grupo', err);
     }
   };
@@ -104,6 +117,7 @@ export function getGroups(contactPhone) {
       const ret = await getGroupsServer({contactPhone});
       if (ret.data != null) dispatch(setNewGroupPayload(ret.data));
     } catch (err) {
+      dispatch(setErrorMessage('Erro ao coletar grupos'));
       console.error('Erro ao criar grupo', err);
     }
   };
@@ -114,6 +128,9 @@ export function removeContact(contactPhone) {
     try {
       dispatch(setRemoveContactPayload(contactPhone));
     } catch (err) {
+      dispatch(
+        setErrorMessage('Erro ao remover contato. Tente novamente mais tarde.'),
+      );
       console.error('Eror ao remover contato');
     }
   };
@@ -125,6 +142,9 @@ export function leaveGroup(groupID, contactPhone) {
       await postLeaveGroup({groupID, contactPhone});
       dispatch(removeGroupFromList(groupID));
     } catch (err) {
+      dispatch(
+        setErrorMessage('Erro ao sair do grupo. Tente novametne mais tarde.'),
+      );
       console.error('Eror ao remover contato');
     }
   };
@@ -189,45 +209,6 @@ function setNewGroupPayload(data) {
     payload: {
       data: data,
     },
-  };
-}
-
-export function setErrorMessage(message) {
-  return {
-    type: 'SET_ERROR_MESSAGE',
-    payload: {
-      message,
-    },
-  };
-}
-
-export function setSuccessMessage(message) {
-  return {
-    type: 'SET_SUCCESS_MESSAGE',
-    payload: {
-      message,
-    },
-  };
-}
-
-export function setPhoneAuth(data) {
-  return {
-    type: 'SET_PHONE_AUTH',
-    payload: {
-      phone: data.phone,
-    },
-  };
-}
-
-export function setErrorToFalse() {
-  return {
-    type: 'ERROR_TO_FALSE',
-  };
-}
-
-export function setSuccessToFalse() {
-  return {
-    type: 'SUCCESS_TO_FALSE',
   };
 }
 

@@ -109,6 +109,7 @@ export default function Routes(props) {
         props.getGroups(props.user.userInfo.phone); //forço um valor padrao para essa chamada
       },
       addContactPendingForApproval: props.addContactPendingForApproval,
+      setMessageDelivered: props.setMessageDelivered,
     });
 
     //mqtt.onMessage(props.registerMessage);
@@ -123,15 +124,10 @@ export default function Routes(props) {
     );*/
   }, []);
   const routeLogged = () => {
-    const {user, setErrorToFalse, setSuccessToFalse} = props;
+    const {user, setErrorToFalse, setSuccessToFalse, inAppNotification} = props;
 
     return (
       <SafeAreaView style={[{flex: 1}, {backgroundColor: '#FFF'}]}>
-        <AppMessageNotification
-          user={user}
-          setErrorToFalse={setErrorToFalse}
-          setSuccessToFalse={setSuccessToFalse}
-        />
         <NavigationContainer ref={navigationRef}>
           <StatusBar barStyle="dark-content" backgroundColor="#FFF" />
 
@@ -193,17 +189,24 @@ export default function Routes(props) {
             />
           </RootStack.Navigator>
         </NavigationContainer>
+        {
+          <AppMessageNotification
+            controller={inAppNotification}
+            setErrorToFalse={setErrorToFalse}
+            setSuccessToFalse={setSuccessToFalse}
+          />
+        }
       </SafeAreaView>
     );
   };
 
   const routeNotLogged = () => {
-    const {user, setErrorToFalse, setSuccessToFalse} = props;
+    const {user, setErrorToFalse, setSuccessToFalse, inAppNotification} = props;
 
     return (
       <SafeAreaView style={[{flex: 1}, {backgroundColor: '#FFF'}]}>
         <AppMessageNotification
-          user={user}
+          controller={inAppNotification}
           setErrorToFalse={setErrorToFalse}
           setSuccessToFalse={setSuccessToFalse}
         />

@@ -3,6 +3,8 @@ var cli = null;
 import uuid from 'react-native-uuid';
 
 class MqttConnection {
+  deliveryPending = [];
+
   init(arrSub, callbacks) {
     const {
       registerMessage,
@@ -10,6 +12,7 @@ class MqttConnection {
       getGroups,
       basicInfo,
       addContactPendingForApproval,
+      setMessageDelivered,
     } = callbacks;
 
     MQTT.createClient({
@@ -18,21 +21,41 @@ class MqttConnection {
     }).then(client => {
       client.on('message', msg => {
         const msgPayload = JSON.parse(msg.data);
-        //console.log('Cheou msg', msgPayload);
         if (msgPayload.hasOwnProperty('value')) {
           if (basicInfo.personalTopic != msgPayload.from) {
+            console.log('Cheou msg', msgPayload.from);
+
             // prevent echo de mensagens
             registerMessage(
-              msgPayload.value,
+              msgPayload.value.message,
               'received',
               msgPayload.type == 'group' ? msgPayload.to : msgPayload.from,
               msgPayload.from,
             );
+
+            // handshake msg
+            const payload = {
+              mqttTopic: {
+                to: msgPayload.from,
+                from: msgPayload.to,
+              },
+              extraData: {
+                msgDelivered: msgPayload.value,
+              },
+              setState: chatAction.message.delivered,
+            };
+            client.publish(config.topic, JSON.stringify(payload), 0, true);
           }
         } else {
           switch (msgPayload.setState) {
             case 'visualized':
               setMessagesAsVisualizedByUser(msgPayload.from);
+              break;
+            case chatAction.message.delivered:
+              setMessageDelivered(
+                msgPayload.from,
+                msgPayload.extraData.msgDelivered.id,
+              );
               break;
             case 'fetchForNewGroups':
               getGroups();
@@ -79,13 +102,12 @@ class MqttConnection {
   onMessage(callback) {
     client.on('message', msg => {
       const msgPayload = JSON.parse(msg.data);
-      console.info('hahahaha', msg);
+
       callback(msgPayload.value, 'received', msgPayload.from);
     });
   }
 
   sendMessage(topic, message) {
-    console.log('payload', JSON.stringify(message));
     cli.publish(topic, JSON.stringify(message), 0, true);
   }
 
@@ -99,5 +121,23 @@ class MqttConnection {
 }
 
 var Mqtt = new MqttConnection();
+
+export const config = {
+  topic: 'baeldung',
+};
+
+export const chatAction = {
+  fetchForNewGroups: 'fetchForNewGroups',
+  notify: {
+    addContact: {
+      refused: 'notify_UserRefusedAddContact',
+      pendingApproval: 'newContactPendingApproval',
+    },
+  },
+  message: {
+    visualized: 'visualized',
+    delivered: 'delivered',
+  },
+};
 
 export default Mqtt;

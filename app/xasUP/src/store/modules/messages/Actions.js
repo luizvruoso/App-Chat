@@ -5,11 +5,35 @@ import {
   addNotSeenMessage,
   cleanNotSeenMessages,
 } from '../../modules/user/Actions';
+import Mqtt, {config} from '../../../service/mqtt';
 
-export function registerMessage(message, type, chatId, fromWho) {
+export function registerMessage(
+  message,
+  type,
+  chatId,
+  fromWho,
+  chatType = 'directMessage',
+) {
   return dispatch => {
     try {
-      dispatch(mountPayloadMessage(message, type, chatId, fromWho));
+      const payloadMsg = mountPayloadMessage(message, type, chatId, fromWho);
+      // console.log('antes', message, type, chatId, fromWho);
+      if (type == 'sent') {
+        Mqtt.sendMessage(config.topic, {
+          mqttTopic: {
+            type: chatType,
+            to: chatId,
+            from: fromWho,
+          },
+          value: {
+            id: payloadMsg.payload.message.id,
+            message,
+          },
+        });
+      }
+
+      dispatch(payloadMsg);
+
       if (type == 'received') {
         dispatch(addNotSeenMessage(chatId));
       }
@@ -27,6 +51,16 @@ export function setMessagesAsVisualizedByUser(user) {
       dispatch(mountSetVisualizedPayload(user));
       //dispatch(cleanNotSeenMessages(user));
       //console.log('alo');
+    } catch (err) {
+      console.log('ee', err);
+    }
+  };
+}
+
+export function setMessageDelivered(chatId, msgId) {
+  return dispatch => {
+    try {
+      dispatch(mountSetDeliveredMessegeById(chatId, msgId));
     } catch (err) {
       console.log('ee', err);
     }
@@ -64,6 +98,16 @@ function mountSetVisualizedPayload(user) {
   };
 }
 
+function mountSetDeliveredMessegeById(chatId, msgId) {
+  return {
+    type: 'SET_MESSAGES_DELIVERED',
+    payload: {
+      chatId,
+      msgId,
+    },
+  };
+}
+
 function mountPayloadDeleteMessage(chatId) {
   return {
     type: 'CLEAR_CHAT',
@@ -84,6 +128,7 @@ function mountPayloadMessage(message, type, chatId, fromWho) {
         message: message,
         date: now(),
         visualized: false,
+        delivered: false,
         fromWho: fromWho,
       },
     },

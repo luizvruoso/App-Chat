@@ -24,8 +24,10 @@ const mapDispatchToProps = (dispatch, props) => {
     cleanNotSeenMessages: chatId => {
       return dispatch(cleanNotSeenMessages(chatId));
     },
-    registerMessage: (message, type, chatId) => {
-      return dispatch(registerMessage(message, type, chatId));
+    registerMessage: (message, type, chatId, fromWho, chatType) => {
+      return dispatch(
+        registerMessage(message, type, chatId, fromWho, chatType),
+      );
     },
     setErrorToFalse: () => {
       return dispatch(setErrorToFalse());

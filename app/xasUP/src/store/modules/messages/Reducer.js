@@ -62,6 +62,23 @@ export default function messages(state = [], action) {
 
         return draft;
       });
+    case 'SET_MESSAGES_DELIVERED':
+      return produce(state, draft => {
+        const index = draft.findIndex(el => el.chatId == action.payload.chatId);
+        if (index != -1) {
+          for (let i = 0; i < draft[index].messages.length; i++) {
+            if (
+              draft[index].messages[i].id == action.payload.msgId &&
+              draft[index].messages[i].type == 'sent'
+            ) {
+              draft[index].messages[i].delivered = true;
+              break;
+            }
+          }
+        }
+
+        return draft;
+      });
     case 'INIT_CHAT':
       return produce(state, draft => {
         if (!Array.isArray(draft)) {
@@ -79,7 +96,7 @@ export default function messages(state = [], action) {
           draft.push(newElement);
         }
       });
-    //return state.push(action.payload);
+
     default:
       return state;
   }
