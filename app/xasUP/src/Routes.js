@@ -122,7 +122,7 @@ export default function Routes(props) {
       ],
       '',
     );*/
-  }, []);
+  }, [props.user.userInfo.isAuth]);
   const routeLogged = () => {
     const {user, setErrorToFalse, setSuccessToFalse, inAppNotification} = props;
 
