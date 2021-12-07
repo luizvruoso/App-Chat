@@ -45,6 +45,8 @@ Em seguida, abra o cmd na pasta que contém o arquivo JSON e rode: ```curl -d @<
 - Agora, após ter iniciado o emulador de celular, vá apara a pastar app/xasUP e rode ```npx react-native run-android```
 - Pronto, a aplicação está funcionando. Aproveite e converse com seus amigos ;)
 
+O docker-compose foi tirado e modificado do seguinte link: https://www.baeldung.com/kafka-connect-mqtt-mongodb
+
 ## Testes
 Algumas formas de testes podem ser vistas no video em que mostramos o funcionamento da aplicação: https://youtu.be/5ewvsn4_m7k
 
