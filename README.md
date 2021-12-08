@@ -10,15 +10,15 @@
 
 ## Tecnologias utilizados:
 
-- Docker
-- Node
-- JSON
-- React Native
-- Mosquitto - MQTT Broker
-- Zookeeper
-- Kafka
+- [Docker](https://www.docker.com/products/docker-desktop)
+- [Node](https://nodejs.org/en/download/)
+- [JSON](https://www.json.org/json-en.html)
+- [React Native](https://reactnative.dev/docs/environment-setup)
+- [Eclipe Mosquitto - MQTT Broker](https://mosquitto.org)
+- [Zookeeper](https://zookeeper.apache.org)
+- [Kafka](https://kafka.apache.org)
 
-## Instalação
+## Instalação e execução
 
 Primeiramente, faremos a configuração do Docker para utilização do MQTT:
 
@@ -61,7 +61,7 @@ O docker-compose foi tirado e modificado do seguinte link: https://www.baeldung.
 
 ![image](https://user-images.githubusercontent.com/38138765/145293577-ec752668-761d-41d2-9d78-8aef19ec9599.png)
 
-## Demonstração
+## Vídeo explicativo
 O vídeo de demonstração por ser visto em: https://youtu.be/5ewvsn4_m7k
 
 ## Testes
