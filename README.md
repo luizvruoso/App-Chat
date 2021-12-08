@@ -8,6 +8,15 @@
 - [React Native](https://reactnative.dev/docs/environment-setup)
 - [Android Studio](https://developer.android.com/studio) (Para emular a aplicação) - ou algum outro de sua preferência.
 
+## Tecnologias utilizados:
+
+- Docker
+- Node
+- React Native
+- Mosquitto - MQTT Broker
+- Zookeeper
+- Kafka
+
 ## Instalação
 
 Primeiramente, faremos a configuração do Docker para utilização do MQTT:
