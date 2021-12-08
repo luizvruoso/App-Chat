@@ -12,6 +12,7 @@
 
 - Docker
 - Node
+- JSON
 - React Native
 - Mosquitto - MQTT Broker
 - Zookeeper
