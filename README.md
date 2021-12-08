@@ -68,6 +68,12 @@ O vídeo de demonstração por ser visto em: https://youtu.be/5ewvsn4_m7k
 ## Testes
 Algumas formas de testes podem ser vistas no video em que mostramos o funcionamento da aplicação: https://youtu.be/5ewvsn4_m7k
 
+## Integrantes
+
+Nome: Luiz Vinicius dos Santos Ruoso   RA: 18233486
+Nome: Victor Felipe dos Santos         RA: 18117820 
+Nome: Victor Luiz Fraga Soldera        RA: 18045674
+
 ## License
 
 MIT
