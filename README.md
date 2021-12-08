@@ -48,7 +48,7 @@ Em seguida, abra o cmd na pasta que contém o arquivo JSON e rode: ```curl -d @<
 O docker-compose foi tirado e modificado do seguinte link: https://www.baeldung.com/kafka-connect-mqtt-mongodb
 
 ## Demonstração
-O vídeo de demonstração por ser vistom em: https://youtu.be/5ewvsn4_m7k
+O vídeo de demonstração por ser visto em: https://youtu.be/5ewvsn4_m7k
 
 ## Testes
 Algumas formas de testes podem ser vistas no video em que mostramos o funcionamento da aplicação: https://youtu.be/5ewvsn4_m7k
