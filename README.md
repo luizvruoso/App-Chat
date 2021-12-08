@@ -17,6 +17,7 @@
 - [Eclipe Mosquitto - MQTT Broker](https://mosquitto.org)
 - [Zookeeper](https://zookeeper.apache.org)
 - [Kafka](https://kafka.apache.org)
+- [MQTT X](https://mqttx.app)
 
 ## Instalação e execução
 
